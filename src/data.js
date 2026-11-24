@@ -298,3 +298,32 @@ DATA.sources = [
  {k:"KKW", t:"Kukkiwon Taekwondo Textbook & Textbook of Taekwondo Poomsae", role:"Authoritative Kukkiwon curriculum", status:"To license"},
  {k:"ITF", t:"Current ITF federation syllabi & tournament rules", role:"Federation-specific variations", status:"To partner"}
 ];
+
+// Video library: links supplied by the founder (24 Nov 2026). The app links out; nothing is embedded or copied.
+// checked: "confirmed" = title/channel confirmed by search; "unchecked" = could not be verified from Claude's environment.
+DATA.videoNote = "Links supplied by the founder on 24 Nov 2026. “Confirmed” means a search matched the title and channel. “Not yet checked” means the link could not be verified from where this was built, so open it and check before you rely on it. All videos open on YouTube; nothing is embedded or copied.";
+DATA.videos = [
+ {cat:"Poomsae · full curricula", lineage:"Kukkiwon/WT", items:[
+  {t:"태권도 품새 (Taekwondo Poomsae) — all forms", by:"Kukkiwon World Taekwondo Headquarters (as listed)", url:"http://www.youtube.com/playlist?list=PLSFr5pEwo7gRNGXHlU-ZVxzha5A0c_M3i", kind:"playlist", official:true, checked:"unchecked", note:"Kukkiwon's education playlist exists; this ID not yet confirmed as that playlist."},
+  {t:"Official Kukkiwon poomsae videos 2020", by:"Chung Do Taekwondo", url:"http://www.youtube.com/playlist?list=PLx1ZaPXDcgpZN0uxorV-fJsy8EggpbE_i", kind:"playlist", checked:"unchecked", note:"A re-upload playlist, not Kukkiwon's own channel."},
+  {t:"All Taekwondo forms", by:"JYMOON Taekwondo", url:"http://www.youtube.com/playlist?list=PLamOLHCK6bE993h9x4GZ2eacLCSX5RzHV", kind:"playlist", checked:"unchecked"},
+  {t:"Taeguk Poomsae 1–8 explained step by step", by:"Kickstart Taekwondo", url:"http://www.youtube.com/playlist?list=PLCOxDMIhWiR9QAsWbYw53Qp8IYp6PRhdS", kind:"playlist", checked:"unchecked"},
+  {t:"Kukkiwon black belt poomsae (Koryo → Ilyeo)", by:"Fortunato Novelliere", url:"http://www.youtube.com/playlist?list=PLe2GMGM7xZNlpIr4KjTBeNsE-fcF-vo8z", kind:"playlist", checked:"unchecked"}]},
+ {cat:"Poomsae · single-video references", lineage:"Kukkiwon/WT", items:[
+  {t:"Taegeuk forms 1–8, walkthrough & instruction (39 min)", by:"HK Taekwondo", url:"http://www.youtube.com/watch?v=4E5nKA86M1Y", kind:"video", checked:"unchecked"},
+  {t:"Taegeuk 1–8, full-speed reference (6 min)", by:"Team Sajado", url:"http://www.youtube.com/watch?v=7iutNejP51Y", kind:"video", checked:"unchecked"},
+  {t:"Taekwondo Poomsae 1–8 (7 min)", by:"Taekwondo Taepoong", url:"http://www.youtube.com/watch?v=6ELApKxX3qk", kind:"video", checked:"unchecked"},
+  {t:"Sipjin breakdown (30 min)", by:"Kukkiwon World Taekwondo Headquarters (as listed)", url:"http://www.youtube.com/watch?v=hOZB0IESJ38", kind:"video", official:true, checked:"unchecked"}]},
+ {cat:"Stretching & mobility for kicks", lineage:"General", safety:true, items:[
+  {t:"how to kick HIGHER (Taekwondo Tutorial) — flexibility & mobility (28 min)", by:"Tae Kwon Do Fury", url:"http://www.youtube.com/watch?v=oAHN-iAMrfM", kind:"video", checked:"confirmed", note:"Includes promotion for the creator's paid course."},
+  {t:"Common stretching mistakes", by:"Tae Kwon Do Fury", url:"http://www.youtube.com/watch?v=Fm_QDLEnyc4", kind:"video", checked:"unchecked"},
+  {t:"Stretch routine for higher kicks", by:"Nat Hearn", url:"http://www.youtube.com/watch?v=7WHwEvUOJQM", kind:"video", checked:"unchecked"},
+  {t:"Stretches for higher kicks", by:"Nat Hearn", url:"http://www.youtube.com/watch?v=VUoy6ticasI", kind:"video", checked:"unchecked"},
+  {t:"How to improve your axe kick", by:"Danikickz", url:"http://www.youtube.com/watch?v=VoCBHLXK8SY", kind:"video", checked:"unchecked"}]},
+ {cat:"Kicks, hand techniques & form mechanics", lineage:"Mostly Kukkiwon/WT", items:[
+  {t:"How to kick in Taekwondo — 9 essential kicks (24 min)", by:"Tae Kwon Do Fury", url:"http://www.youtube.com/watch?v=8obsO7lOkoM", kind:"video", checked:"unchecked"},
+  {t:"How to master your basic kicks", by:"Nat Hearn", url:"http://www.youtube.com/watch?v=3XYbC5UbLOc", kind:"video", checked:"unchecked"},
+  {t:"Hand techniques — all colour-belt curriculum", by:"Black Eagle Martial Arts", url:"http://www.youtube.com/watch?v=s4FcS03tZac", kind:"video", checked:"unchecked"},
+  {t:"Basic Taekwondo blocks", by:"TaekwondoShawn", url:"http://www.youtube.com/watch?v=q7L9ImZH3Jo", kind:"video", checked:"unchecked"}]}
+];
+DATA.videoGaps = "No ITF (Chang-Hon) tul videos yet: the supplied list covers Kukkiwon/WT forms only. Sources to look for: an ITF federation's official channel, or instructor-filmed videos commissioned for Dojang.";

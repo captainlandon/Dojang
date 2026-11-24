@@ -6,7 +6,11 @@ from playwright.async_api import async_playwright
 
 DIST = pathlib.Path(__file__).resolve().parent.parent / "dist" / "index.html"
 ROUTES = ["dojang", "tracks", "cycle", "evidence", "home", "patterns", "pattern-chon-ji", "pattern-dan-gun",
-          "pattern-yul-gok", "glossary", "techniques", "philosophy", "path", "train", "quiz", "rules", "about"]
+          "pattern-yul-gok", "watch", "glossary", "techniques", "philosophy", "path", "train", "quiz", "rules", "about"]
+EXPECT = {"dojang": "become", "tracks": "Tracks", "cycle": "agency cycle", "evidence": "Evidence", "home": "focus",
+          "patterns": "Patterns", "pattern-chon-ji": "Chon-Ji", "pattern-dan-gun": "Dan-Gun", "pattern-yul-gok": "Yul-Gok",
+          "watch": "Watch", "glossary": "Terms", "techniques": "Technique", "philosophy": "Philosophy", "path": "Belt path",
+          "train": "Train", "quiz": "Quiz", "rules": "Rules", "about": "History"}
 LEGACY = {"dj_belt": "3", "dj_learned": '{"chon-ji":true}', "dj_reps": '{"chon-ji":7}',
           "dj_terms": '{"Hana":true}', "dj_streak": '{"days":[]}'}
 
@@ -22,8 +26,10 @@ async def main():
         await pg.reload()
         for r in ROUTES:
             await pg.evaluate(f"location.hash = '{r}'"); await pg.wait_for_timeout(120)
-            n = await pg.evaluate("document.querySelector('#main').innerText.trim().length")
-            if n < 40: fails.append(f"#{r}: rendered only {n} chars")
+            h1 = await pg.evaluate("(document.querySelector('#main h1')||{}).innerText||''")
+            want = EXPECT.get(r)
+            if not h1.strip(): fails.append(f"#{r}: no heading rendered")
+            elif want and want not in h1: fails.append(f"#{r}: expected heading containing {want!r}, got {h1!r} (route fell through?)")
         # progress preserved
         await pg.evaluate("location.hash='home'"); await pg.wait_for_timeout(150)
         txt = await pg.inner_text("#main")

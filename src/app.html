@@ -185,7 +185,7 @@ function speak(text){
 
 const NAV = [
   ["home","도","Today"],["patterns","형","Patterns"],["glossary","말","Terms"],["techniques","기","Technique"],["philosophy","정","Philosophy"],
-  ["path","띠","Belt path"],["train","련","Train"],["quiz","시","Quiz"],["rules","규","Rules"],["about","역","History"]
+  ["path","띠","Belt path"],["train","련","Train"],["watch","영","Watch"],["quiz","시","Quiz"],["rules","규","Rules"],["about","역","History"]
 ];
 const SHELL = [["dojang","道","Hub"],["tracks","갈","Tracks"],["cycle","環","Agency cycle"],["evidence","證","Evidence"]];
 const BOTTOM = ["dojang","patterns","glossary","train","quiz"];
@@ -258,7 +258,7 @@ V.patterns = () => {
   <p class="lead">Every pattern is labelled by lineage. Gen. Choi's 24 Chang-Hon tul are the spine; Kukkiwon poomsae sit alongside for students in WT schools.</p>
   <div class="tabs">${[["itf","ITF · Chang-Hon (24)"],["kk","Kukkiwon / WT (17)"],["hist","Historical"]].map(([k,l])=>`<button class="tab ${tab===k?"on":""}" onclick="store.set('ptab','${k}');route()">${l}</button>`).join("")}</div>
   ${tab==="itf"?`<p class="muted small" style="margin-bottom:12px">“The 24 patterns represent 24 hours, one day, or all my life.” — Gen. Choi, ENC Vol. VIII</p><div class="grid g4">${itf}</div>`:""}
-  ${tab==="kk"?`<div class="note">Kukkiwon poomsae are listed for completeness. Move-by-move content would come from the Kukkiwon Textbook under license.</div><div class="grid g4">${kk}</div>`:""}
+  ${tab==="kk"?`<div class="note">Kukkiwon poomsae are listed for completeness. Move-by-move content would come from the Kukkiwon Textbook under license. Meanwhile, see video demonstrations in <a href="#watch">Watch</a>.</div><div class="grid g4">${kk}</div>`:""}
   ${tab==="hist"?`<div class="grid g3">${hist}</div>`:""}`;
 };
 
@@ -434,6 +434,19 @@ V.philosophy = () => `<div class="kicker">Philosophy · 정신</div><h1>Philosop
   <h2>Training secrets</h2>
   <div class="card"><p class="muted">${DATA.secrets.intro}</p><ol style="margin:10px 0 0 20px">${DATA.secrets.items.map(x=>`<li style="margin:4px 0">${x}</li>`).join("")}</ol><div class="src">${DATA.secrets.src}</div></div>`;
 
+
+V.watch = () => `<div class="kicker">Video library · 영상</div><h1>Watch</h1>
+  <p class="lead">Curated video references for forms, stretching and technique. Each opens on YouTube. Use them alongside your instructor, not instead of one.</p>
+  <div class="note">${DATA.videoNote}</div>
+  ${DATA.videos.map(g=>`<h2>${g.cat} <span class="pill" style="vertical-align:middle">${g.lineage}</span></h2>
+    ${g.safety?`<div class="note" style="border-color:var(--seal)">Warm up before you stretch, and never bounce or force a stretch into pain. If you have an injury or condition, check with a doctor or physiotherapist first.</div>`:""}
+    <div class="grid g2">${g.items.map(v=>`<a class="card click" style="text-decoration:none" href="${v.url}" target="_blank" rel="noopener noreferrer">
+      <div class="row" style="justify-content:space-between"><span class="pill">${v.kind==="playlist"?"▤ Playlist":"▶ Video"}</span>
+        <span class="row" style="gap:6px">${v.official?'<span class="pill red">Listed as official</span>':""}<span class="pill" style="${v.checked==="confirmed"?"color:#9fd8ad;border-color:#9fd8ad55":"color:var(--gold);border-color:#d9b25a55"}">${v.checked==="confirmed"?"✓ Confirmed":"Not yet checked"}</span></span></div>
+      <h3 style="margin-top:10px">${esc(v.t)}</h3><div class="muted small">${esc(v.by)}</div>
+      ${v.note?`<p class="small dim" style="margin-top:6px">${esc(v.note)}</p>`:""}</a>`).join("")}</div>`).join("")}
+  <div class="note">${DATA.videoGaps}</div>`;
+
 V.path = () => `<div class="kicker">Curriculum · 띠</div><h1>Belt path</h1>
   <p class="lead">Choose your current rank. The app sets your daily focus and grading checklist from it. Colours and order follow ENC Vol. II and Vol. VIII; check them against your own school's syllabus.</p>
   <div class="path" style="margin-top:20px">${DATA.belts.map((b,i)=>{ const t=b.tul?tulById(b.tul):null; return `
@@ -473,6 +486,7 @@ V.train = () => `<div class="kicker">Training · 수련</div><h1>Train</h1>
       <p class="small dim" style="margin-top:10px">Set “Call every” to 0 for a plain round timer. Voice needs a Korean speech voice on your device.</p>
     </div>
   </div>
+  <p class="small muted" style="margin-top:14px">Stretching and kicking videos: <a href="#watch">Watch</a>.</p>
   <h2>Today's session · ${DATA.belts[state.belt].rank}</h2>
   ${session()}`;
 function session(){

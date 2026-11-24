@@ -49,3 +49,12 @@ test("track statuses are valid and only live tracks link to a module", () => {
     assert.equal(Boolean(t.href), t.status === "live", t.id);
   }
 });
+test("video library: https/http YouTube links, a check status, no duplicates", () => {
+  const all = D.videos.flatMap(g => g.items);
+  assert.ok(all.length >= 17);
+  for (const v of all) {
+    assert.match(v.url, /^https?:\/\/www\.youtube\.com\/(watch\?v=|playlist\?list=)[\w-]+$/, v.url);
+    assert.ok(["confirmed", "unchecked"].includes(v.checked), v.t);
+  }
+  assert.equal(new Set(all.map(v => v.url)).size, all.length, "duplicate link");
+});

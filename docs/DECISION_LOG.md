@@ -19,3 +19,4 @@ Format: date · decision · status · rationale. Status is **Established** (deci
 | 13 | 2026-11-24 | Repository is private; license “All rights reserved” until the founder chooses one | Implemented-provisional | Dossier open decision |
 | 14 | open | Name for the Taekwon-Do module | Open | “Dojang” now names the whole offering |
 | 15 | open | Research partners, instructor qualifications, evidence thresholds | Open | Dossier open decisions |
+| 16 | 2026-11-24 | Add a “Watch” video library (17 founder-supplied YouTube links). Link out only: no embedding (the artifact frame blocks third-party iframes) and no copying. Each link is labelled Confirmed or Not yet checked | Implemented-provisional | Only 1 of 17 links could be confirmed from the build environment; the rest need a manual check. No ITF tul videos yet. |
