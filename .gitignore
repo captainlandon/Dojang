@@ -1,0 +1,8 @@
+# Copyrighted source scans are never committed
+*.pdf
+*.zip
+source/
+# local
+node_modules/
+__pycache__/
+.DS_Store

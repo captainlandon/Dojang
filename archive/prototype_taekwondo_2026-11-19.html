@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dojang — Taekwon-Do Study & Training</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#121214; --ink2:#1b1b1f; --ink3:#25252b; --line:#33333b;
+  --paper:#f2ece0; --muted:#a59f93; --dim:#77726a;
+  --seal:#c23b2e; --seal2:#e0574a; --gold:#d9b25a; --blue:#4c7fd1; --green:#4f9e62;
+  --r:14px; --serif:"Noto Serif KR",Georgia,serif; --sans:Inter,system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--ink);color:var(--paper);font-family:var(--sans);font-size:15px;line-height:1.5}
+body{min-height:100vh;display:flex}
+a{color:inherit}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+input,select{font:inherit;color:var(--paper);background:var(--ink2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%}
+input:focus,select:focus,button:focus-visible{outline:2px solid var(--seal2);outline-offset:2px}
+
+/* nav */
+nav.side{width:232px;flex:none;border-right:1px solid var(--line);padding:22px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:2px;background:var(--ink)}
+.brand{display:flex;align-items:center;gap:10px;padding:0 8px 18px}
+.seal{width:36px;height:36px;border-radius:8px;background:var(--seal);display:grid;place-items:center;font-family:var(--serif);font-weight:900;font-size:18px;color:#fff;box-shadow:inset 0 0 0 2px rgba(255,255,255,.15)}
+.brand b{font-family:var(--serif);font-size:18px;letter-spacing:.02em}
+.brand small{display:block;color:var(--dim);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.nav-a{display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:10px;color:var(--muted);text-decoration:none;font-weight:500}
+.nav-a:hover{background:var(--ink2);color:var(--paper)}
+.nav-a.on{background:var(--ink3);color:var(--paper)}
+.nav-a .ic{width:20px;text-align:center;font-family:var(--serif);font-weight:700;color:var(--seal2)}
+.side .foot{margin-top:auto;color:var(--dim);font-size:11.5px;padding:8px 10px;line-height:1.45}
+main{flex:1;min-width:0;padding:34px clamp(18px,4vw,56px) 110px;max-width:1180px}
+nav.bottom{display:none}
+@media (max-width:860px){
+  nav.side{display:none}
+  nav.bottom{display:flex;position:fixed;bottom:0;left:0;right:0;background:rgba(18,18,20,.96);backdrop-filter:blur(8px);border-top:1px solid var(--line);z-index:20;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+  nav.bottom a{display:flex;flex-direction:column;align-items:center;font-size:10.5px;color:var(--muted);text-decoration:none;padding:4px 6px;gap:1px}
+  nav.bottom a .ic{font-family:var(--serif);font-weight:700;font-size:17px;color:var(--dim)}
+  nav.bottom a.on{color:var(--paper)} nav.bottom a.on .ic{color:var(--seal2)}
+  main{padding-top:22px}
+}
+
+/* type & blocks */
+h1{font-family:var(--serif);font-size:clamp(26px,3.4vw,38px);line-height:1.15;font-weight:900;letter-spacing:-.01em}
+h2{font-family:var(--serif);font-size:21px;font-weight:700;margin:30px 0 12px}
+h3{font-size:15px;font-weight:600}
+.kicker{color:var(--seal2);font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+.lead{color:var(--muted);max-width:66ch;margin-top:10px}
+.hg{font-family:var(--serif);color:var(--gold)}
+.muted{color:var(--muted)} .dim{color:var(--dim)} .small{font-size:12.5px}
+.src{font-size:11.5px;color:var(--dim);margin-top:8px}
+.src::before{content:"Source · ";color:var(--muted)}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+.g3{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+.g4{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}
+.card{background:var(--ink2);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.card.click{cursor:pointer;transition:border-color .15s,transform .15s}
+.card.click:hover{border-color:#4a4a54;transform:translateY(-1px)}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:999px;background:var(--ink3);color:var(--muted);border:1px solid var(--line)}
+.pill.red{background:rgba(194,59,46,.15);border-color:rgba(194,59,46,.4);color:#f0a59c}
+.pill.gold{background:rgba(217,178,90,.12);border-color:rgba(217,178,90,.35);color:var(--gold)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.btn{text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border-radius:10px;background:var(--ink3);border:1px solid var(--line);font-weight:600;font-size:14px}
+.btn:hover{border-color:#55555f}
+.btn.pri{background:var(--seal);border-color:var(--seal);color:#fff}
+.btn.pri:hover{background:var(--seal2)}
+.btn.sm{padding:6px 11px;font-size:13px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0}
+.chip{padding:6px 12px;border-radius:999px;border:1px solid var(--line);color:var(--muted);font-size:13px;font-weight:500}
+.chip.on{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:18px 0}
+.tab{padding:10px 14px;color:var(--muted);font-weight:600;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tab.on{color:var(--paper);border-color:var(--seal2)}
+.note{border-left:3px solid var(--gold);background:rgba(217,178,90,.07);padding:12px 14px;border-radius:0 10px 10px 0;color:#dcd3c0;font-size:13.5px;margin:14px 0}
+.hidden{display:none!important}
+.cols2{columns:2;column-gap:32px}@media (max-width:700px){.cols2{columns:1}}
+
+/* home */
+.hero{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;align-items:stretch}
+@media (max-width:860px){.hero{grid-template-columns:1fr}}
+.hero .card.big{padding:26px;background:linear-gradient(140deg,#1d1c20 0%,#16161a 60%),var(--ink2);position:relative;overflow:hidden}
+.hero .card.big::after{content:"道";position:absolute;right:-10px;bottom:-60px;font-family:var(--serif);font-size:240px;font-weight:900;color:rgba(194,59,46,.08);line-height:1}
+.stat{font-family:var(--serif);font-size:30px;font-weight:900}
+.bar{height:6px;background:var(--ink3);border-radius:9px;overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--seal),var(--gold));border-radius:9px;transition:width .4s}
+.beltchip{display:inline-block;width:46px;height:12px;border-radius:3px;border:1px solid rgba(255,255,255,.18);vertical-align:middle;position:relative;overflow:hidden}
+.beltchip i{position:absolute;top:0;bottom:0;right:7px;width:7px}
+
+/* pattern detail */
+.pd{display:grid;grid-template-columns:minmax(280px,1fr) 1.15fr;gap:18px;align-items:start}
+@media (max-width:980px){.pd{grid-template-columns:1fr}}
+.floor{background:#0e0e10;border:1px solid var(--line);border-radius:var(--r);position:relative;aspect-ratio:1/1;overflow:hidden}
+.floor svg{width:100%;height:100%;display:block}
+.stepnow{padding:18px;border-radius:var(--r);background:var(--ink2);border:1px solid var(--line);margin-top:12px}
+.stepnum{font-family:var(--serif);font-size:44px;font-weight:900;line-height:1;color:var(--seal2)}
+.stepnum small{font-size:15px;color:var(--dim);font-weight:500}
+.steplist{max-height:520px;overflow:auto;border:1px solid var(--line);border-radius:var(--r)}
+.steplist li{list-style:none;display:grid;grid-template-columns:38px 1fr;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);cursor:pointer;font-size:13.5px}
+.steplist li:last-child{border:0}
+.steplist li.on{background:rgba(194,59,46,.12)}
+.steplist li b{font-family:var(--serif);color:var(--muted)}
+.steplist li.on b{color:var(--seal2)}
+.ctrl{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center}
+.ctrl input[type=range]{width:120px;padding:0;accent-color:var(--seal)}
+.counter{display:flex;align-items:center;gap:10px}
+.counter .n{font-family:var(--serif);font-size:24px;font-weight:900;min-width:34px;text-align:center}
+
+/* glossary */
+table.gl{width:100%;border-collapse:collapse;font-size:14px}
+table.gl th{text-align:left;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);font-weight:600;padding:8px 10px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--ink)}
+table.gl td{padding:10px;border-bottom:1px solid #26262c;vertical-align:top}
+table.gl td.ko{font-weight:600}
+table.gl tr:hover td{background:#17171b}
+.say{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);color:var(--muted);font-size:13px}
+.say:hover{color:var(--paper);border-color:#55555f}
+
+/* stance svg */
+.stsvg{background:#0e0e10;border-radius:10px;border:1px solid var(--line);margin-bottom:12px}
+
+/* timer */
+.timer{text-align:center;padding:30px 18px}
+.tdisp{font-family:var(--serif);font-size:clamp(64px,12vw,120px);font-weight:900;line-height:1;font-variant-numeric:tabular-nums}
+.tphase{font-size:13px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;margin-bottom:10px}
+.tphase.work{color:var(--seal2)} .tphase.rest{color:var(--green)} .tphase.idle{color:var(--dim)}
+.callout{font-family:var(--serif);font-size:clamp(26px,4vw,40px);font-weight:900;min-height:1.4em;margin-top:14px}
+.callout small{display:block;font-family:var(--sans);font-size:14px;color:var(--muted);font-weight:500}
+.fields{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.fields label{font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:5px}
+
+/* quiz */
+.flash{perspective:1200px;height:260px;cursor:pointer;max-width:560px}
+.flash .in{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.flash.flip .in{transform:rotateY(180deg)}
+.flash .face{position:absolute;inset:0;backface-visibility:hidden;border-radius:18px;border:1px solid var(--line);background:var(--ink2);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center}
+.flash .back{transform:rotateY(180deg);background:#1f1a1a;border-color:rgba(194,59,46,.4)}
+.flash .big{font-family:var(--serif);font-size:32px;font-weight:900}
+.opts{display:grid;gap:8px;margin-top:14px;max-width:560px}
+.opt{text-align:left;padding:13px 15px;border-radius:12px;border:1px solid var(--line);background:var(--ink2);font-weight:500}
+.opt:hover{border-color:#55555f}
+.opt.ok{border-color:var(--green);background:rgba(79,158,98,.15)}
+.opt.no{border-color:var(--seal);background:rgba(194,59,46,.15)}
+
+/* belt path */
+.path{display:flex;flex-direction:column;gap:0;position:relative}
+.step{display:grid;grid-template-columns:70px 1fr auto;gap:14px;align-items:center;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:var(--ink2);margin-bottom:8px}
+.step.me{border-color:var(--seal);box-shadow:0 0 0 1px var(--seal) inset}
+.step .belt{height:16px;border-radius:4px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.2)}
+.step .belt i{position:absolute;top:0;bottom:0;right:10px;width:10px}
+.tick{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--line);display:grid;place-items:center;font-size:13px}
+.tick.on{background:var(--green);border-color:var(--green);color:#fff}
+dl.wt dt{font-weight:700;margin-top:14px} dl.wt dd{color:#d6cfc2;margin-top:3px}
+.timeline{border-left:2px solid var(--line);margin-left:6px}
+.timeline>div{padding:0 0 16px 18px;position:relative}
+.timeline>div::before{content:"";position:absolute;left:-7px;top:5px;width:12px;height:12px;border-radius:50%;background:var(--seal);box-shadow:0 0 0 3px var(--ink)}
+.timeline b{font-family:var(--serif);color:var(--gold);margin-right:8px}
+</style>
+</head>
+<body>
+<nav class="side" id="side"></nav>
+<main id="main"></main>
+<nav class="bottom" id="bottom"></nav>
+<script>
+// Content dataset for the prototype. Descriptions are original paraphrase; source fields cite where each fact is documented.
+// ENC = Gen. Choi Hong Hi, Encyclopedia of Taekwon-Do (15 vols). 1965 = Choi, Taekwon-Do: The Art of Self Defence.
+// BTT = Basic Taekwondo Techniques and Terminology (Kukkiwon-style guide). USAT26 = USA Taekwondo April 2026 Rules Update.
+const DATA = {};
+
+DATA.tenets = [
+  {en:"Courtesy", ko:"Ye Ui", hg:"예의", gist:"Treat others with politeness and fairness, respect seniority and possessions, and practise mutual concession.", src:"ENC Vol. II, pp. 8–10"},
+  {en:"Integrity", ko:"Yom Chi", hg:"염치", gist:"Know right from wrong and feel conscience when wrong — no fixed breaks, no bought rank, no teaching what you don't know.", src:"ENC Vol. II, p. 11"},
+  {en:"Perseverance", ko:"In Nae", hg:"인내", gist:"Set a goal — a degree, a technique — and keep at it patiently until it is reached.", src:"ENC Vol. II, p. 11"},
+  {en:"Self-Control", ko:"Guk Gi", hg:"극기", gist:"Command yourself inside and outside the do jang; loss of control in free sparring can be disastrous.", src:"ENC Vol. II, p. 12"},
+  {en:"Indomitable Spirit", ko:"Baekjul Boolgool", hg:"백절불굴", gist:"Face any opponent or obstacle with courage, without fear or hesitation, whatever the odds.", src:"ENC Vol. II, p. 12"}
+];
+
+DATA.oath = "The student oath is not printed in this edition of the Encyclopedia; source it from a later ITF text.";
+DATA.secrets = {src:"ENC Vol. I, Training Secret of Taekwon-Do, p. 80", intro:"Diligence alone does not make good technique: a qualified instructor matters, and an unqualified one is worse than none. Keep these eight principles in mind:", items:[
+ "Study the theory of power thoroughly.",
+ "Understand the purpose and meaning of every movement.",
+ "Coordinate eyes, hands, feet and breath into one action.",
+ "Match the right attacking tool to each vital spot.",
+ "Learn the correct angle and distance for attack and defence.",
+ "Keep arms and legs slightly bent while a movement is in motion.",
+ "Begin almost every movement with a backward motion.",
+ "Make a sine wave through the movement with proper knee spring."]};
+DATA.rankSystem = {src:"ENC Vol. I, System of Rank (Dan Gup Jedo), pp. 91–95", points:[
+ ["19 ranks","10 grades (gup), counted down from 10th to 1st, then 9 degrees (dan), counted up from 1st to 9th. Character, fortitude and tenacity are graded alongside technique."],
+ ["Why nine","Nine is the highest single digit and three times three; three is the most esteemed number in the Orient (heaven, mortals, earth), so 9th Dan is “the highest of the high”."],
+ ["Three classes of black belt","1st–3rd Dan: novice stage · 4th–6th Dan: expert class · 7th–9th Dan: masters."],
+ ["First Dan is a beginning","A new black belt has built a foundation, like a fledgling just able to leave the nest; Choi warns against treating every black belt as an expert."],
+ ["Time to 1st Dan","Three course options in the text: 18 months (1½ h/day, 6 days/week, 702 h), 30 months (1½ h/day, 3 days/week, 585 h) or 12 months (4 h/day, 6 days/week, 1,248 h)."]]};
+DATA.itfRulesHistoric = {src:"ENC Vol. I, Competition & Rules for Competition, pp. 128–136", text:"The Encyclopedia's competition rules list four events: patterns (optional and designated), sparring, power test (forefist, knife-hand, footsword and others) and special techniques (flying high kick, overhead kick, flying turning kick, 360° mid-air kick, flying reverse turning kick), with team and individual divisions. Shown here as a historical record; current ITF tournament rules differ by federation."};
+
+// ITF Chang-Hon tul. moves: standard counts; meaning paraphrased from ENC Vol. VIII "Interpretation of Patterns".
+DATA.itfTul = [
+ {id:"chon-ji", name:"Chon-Ji", hg:"천지", moves:19, rank:"9th Gup", belt:"White · yellow stripe", vol:"VIII", diagram:"+", meaning:"“Heaven and Earth” — the creation of the world and the beginning of human history, so it is the first pattern a beginner learns. Two similar halves stand for heaven and earth."},
+ {id:"dan-gun", name:"Dan-Gun", hg:"단군", moves:21, rank:"8th Gup", belt:"Yellow", vol:"VIII", diagram:"I", meaning:"Named for the holy Dan-Gun, legendary founder of Korea in 2333 B.C."},
+ {id:"do-san", name:"Do-San", hg:"도산", moves:24, rank:"7th Gup", belt:"Yellow · green stripe", vol:"VIII", meaning:"Pseudonym of patriot Ahn Chang-Ho (1876–1938). The 24 movements represent his whole life, given to Korean education and independence."},
+ {id:"won-hyo", name:"Won-Hyo", hg:"원효", moves:28, rank:"6th Gup", belt:"Green", vol:"IX", meaning:"The noted monk who introduced Buddhism to the Silla Dynasty (686 A.D.)."},
+ {id:"yul-gok", name:"Yul-Gok", hg:"율곡", moves:38, rank:"5th Gup", belt:"Green · blue stripe", vol:"IX", diagram:"士", meaning:"Pseudonym of philosopher-scholar Yi I (1536–1584), the “Confucius of Korea”. 38 movements = his birthplace on the 38th parallel; the diagram means “scholar”."},
+ {id:"joong-gun", name:"Joong-Gun", hg:"중근", moves:32, rank:"4th Gup", belt:"Blue", vol:"IX", meaning:"Patriot Ahn Joong-Gun, who assassinated Hiro-Bumi Ito. 32 movements = his age at execution in Lui-Shung prison (1910)."},
+ {id:"toi-gye", name:"Toi-Gye", hg:"퇴계", moves:37, rank:"3rd Gup", belt:"Blue · red stripe", vol:"X", diagram:"士", meaning:"Pen name of neo-Confucian scholar Yi Hwang (16th c.). 37 movements = his birthplace on the 37th parallel; diagram = “scholar”."},
+ {id:"hwa-rang", name:"Hwa-Rang", hg:"화랑", moves:29, rank:"2nd Gup", belt:"Red", vol:"X", meaning:"The Hwa-Rang youth group of the early-7th-century Silla Dynasty. 29 movements = the 29th Infantry Division, where Taekwon-Do matured."},
+ {id:"choong-moo", name:"Choong-Moo", hg:"충무", moves:30, rank:"1st Gup", belt:"Red · black stripe", vol:"X", meaning:"Admiral Yi Soon-Sin, credited with the armoured turtle ship (Kobukson, 1592). It ends with a left-hand attack to symbolise his untimely death."},
+ {id:"kwang-gae", name:"Kwang-Gae", hg:"광개", moves:39, rank:"1st Dan", belt:"Black", vol:"XI", diagram:"土", meaning:"Gwang-Gae-Toh-Wang, 19th king of Koguryo, who regained lost territory including much of Manchuria. 39 movements = 391 A.D., his accession."},
+ {id:"po-eun", name:"Po-Eun", hg:"포은", moves:36, rank:"1st Dan", belt:"Black", vol:"XI", diagram:"—", meaning:"Pseudonym of loyal subject and poet Chong Mong-Chu (1400). The straight-line diagram represents his unerring loyalty at the end of Koryo."},
+ {id:"ge-baek", name:"Ge-Baek", hg:"계백", moves:44, rank:"1st Dan", belt:"Black", vol:"XI", diagram:"I", meaning:"Ge-Baek, great general of the Baek Je Dynasty (660 A.D.). The diagram represents his severe, strict military discipline."},
+ {id:"eui-am", name:"Eui-Am", hg:"의암", moves:45, rank:"2nd Dan", belt:"Black", vol:"XII", diagram:"I", meaning:"Pseudonym of Son Byong Hi, leader of the March 1, 1919 independence movement. 45 = his age when he renamed Dong Hak to Chondo Kyo (1905)."},
+ {id:"choong-jang", name:"Choong-Jang", hg:"충장", moves:52, rank:"2nd Dan", belt:"Black", vol:"XII", meaning:"Pseudonym of General Kim Duk Ryang. Ends with a left-hand attack for the tragedy of his death in prison at 27."},
+ {id:"juche", name:"Juche", hg:"주체", moves:45, rank:"2nd Dan", belt:"Black", vol:"XII", diagram:"⩛", meaning:"The idea that man is master of everything and decides his own destiny, said to be rooted in Baekdu Mountain; the diagram represents the mountain. Replaced Ko-Dang (1986); some organisations still teach Ko-Dang.", note:"Lineage-sensitive: content varies by federation."},
+ {id:"sam-il", name:"Sam-Il", hg:"삼일", moves:33, rank:"3rd Dan", belt:"Black", vol:"XIII", meaning:"The independence movement of March 1, 1919. 33 movements = the 33 patriots who planned it."},
+ {id:"yoo-sin", name:"Yoo-Sin", hg:"유신", moves:68, rank:"3rd Dan", belt:"Black", vol:"XIII", meaning:"General Kim Yoo Sin of Silla. 68 = 668 A.D., the year Korea was united. The ready posture draws the sword on the right side, for his mistake of fighting alongside foreign forces."},
+ {id:"choi-yong", name:"Choi-Yong", hg:"최영", moves:46, rank:"3rd Dan", belt:"Black", vol:"XIII", meaning:"General Choi Yong, premier and commander-in-chief in 14th-century Koryo, respected for loyalty and humility; executed by subordinates under Yi Sung Gae."},
+ {id:"yon-gae", name:"Yon-Gae", hg:"연개", moves:49, rank:"4th Dan", belt:"Black", vol:"XIV", meaning:"Koguryo general Yon Gae Somoon. 49 = 649 A.D., when he forced the Tang Dynasty out of Korea at Ansi Sung."},
+ {id:"ul-ji", name:"Ul-Ji", hg:"을지", moves:42, rank:"4th Dan", belt:"Black", vol:"XIV", diagram:"ㄱ", meaning:"General Ul-Ji Moon Dok, who defended Korea against a Tang invasion force in 612 A.D. with hit-and-run tactics. 42 = the author's age when he designed it."},
+ {id:"moon-moo", name:"Moon-Moo", hg:"문무", moves:61, rank:"4th Dan", belt:"Black", vol:"XIV", meaning:"The 30th king of Silla, buried at sea near Dae Wang Am to defend his land forever. 61 = 661 A.D., his accession."},
+ {id:"so-san", name:"So-San", hg:"서산", moves:72, rank:"5th Dan", belt:"Black", vol:"XV", meaning:"The great monk Choi Hyong Ung (1520–1604). 72 = his age when he organised monk soldiers who helped repel the 1592 invasion."},
+ {id:"se-jong", name:"Se-Jong", hg:"세종", moves:24, rank:"5th Dan", belt:"Black", vol:"XV", diagram:"王", meaning:"King Se-Jong, who invented the Korean alphabet in 1443 and was a noted meteorologist. 24 movements = the 24 letters of the alphabet; diagram = “king”."},
+ {id:"tong-il", name:"Tong-Il", hg:"통일", moves:56, rank:"6th Dan", belt:"Black", vol:"XV", diagram:"I", meaning:"The resolution to reunify Korea, divided since 1945. The diagram symbolises a homogeneous people."}
+];
+DATA.historicTul = [
+ {name:"Ko-Dang", hg:"고당", moves:39, note:"Listed among the 20 Chang-Hon patterns in the 1965 book; retired in favour of Juche. Some federations teach it instead of Juche.", src:"1965 Table of Contents, p. 208"}
+];
+
+// Step-by-step sequences: compact paraphrase of ENC Vol. VIII. x,y = schematic floor position; f = facing (A right, B left, D forward, C back, E/F far-end left/right).
+DATA.sequences = {
+ "chon-ji": {ready:"Parallel ready stance (narani junbi sogi) facing D.", end:"Bring the left foot back to the ready posture.", src:"ENC Vol. VIII, Pattern Chon-Ji", steps:[
+  {m:"Left foot → B", s:"Left walking stance", t:"Low block · left forearm", f:"B", x:-1,y:0},
+  {m:"Right foot → B", s:"Right walking stance", t:"Middle punch · right fist", f:"B", x:-2,y:0},
+  {m:"Right foot → A, turn clockwise", s:"Right walking stance", t:"Low block · right forearm", f:"A", x:-1,y:0},
+  {m:"Left foot → A", s:"Left walking stance", t:"Middle punch · left fist", f:"A", x:0,y:0},
+  {m:"Left foot → D, turn counter-clockwise", s:"Left walking stance", t:"Low block · left forearm", f:"D", x:0,y:1},
+  {m:"Right foot → D", s:"Right walking stance", t:"Middle punch · right fist", f:"D", x:0,y:2},
+  {m:"Right foot → C, turn clockwise", s:"Right walking stance", t:"Low block · right forearm", f:"C", x:0,y:1},
+  {m:"Left foot → C", s:"Left walking stance", t:"Middle punch · left fist", f:"C", x:0,y:0},
+  {m:"Left foot → A", s:"Right L-stance", t:"Middle block · left inner forearm", f:"A", x:1,y:0},
+  {m:"Right foot → A", s:"Right walking stance", t:"Middle punch · right fist", f:"A", x:2,y:0},
+  {m:"Right foot → B, turn clockwise", s:"Left L-stance", t:"Middle block · right inner forearm", f:"B", x:1,y:0},
+  {m:"Left foot → B", s:"Left walking stance", t:"Middle punch · left fist", f:"B", x:0,y:0},
+  {m:"Left foot → C", s:"Right L-stance", t:"Middle block · left inner forearm", f:"C", x:0,y:-1},
+  {m:"Right foot → C", s:"Right walking stance", t:"Middle punch · right fist", f:"C", x:0,y:-2},
+  {m:"Right foot → D, turn clockwise", s:"Left L-stance", t:"Middle block · right inner forearm", f:"D", x:0,y:-1},
+  {m:"Left foot → D", s:"Left walking stance", t:"Middle punch · left fist", f:"D", x:0,y:0},
+  {m:"Right foot → D", s:"Right walking stance", t:"Middle punch · right fist", f:"D", x:0,y:1},
+  {m:"Right foot → C (step back)", s:"Left walking stance toward D", t:"Middle punch · left fist", f:"D", x:0,y:0},
+  {m:"Left foot → C (step back)", s:"Right walking stance toward D", t:"Middle punch · right fist", f:"D", x:0,y:-1}
+ ]},
+ "dan-gun": {ready:"Parallel ready stance (narani junbi sogi) facing D.", end:"Bring the left foot back to the ready posture.", src:"ENC Vol. VIII, Pattern Dan-Gun", steps:[
+  {m:"Left foot → B", s:"Right L-stance", t:"Middle guarding block · knife-hand", f:"B", x:-1,y:0},
+  {m:"Right foot → B", s:"Right walking stance", t:"High punch · right fist", f:"B", x:-2,y:0},
+  {m:"Right foot → A, turn clockwise", s:"Left L-stance", t:"Middle guarding block · knife-hand", f:"A", x:-1,y:0},
+  {m:"Left foot → A", s:"Left walking stance", t:"High punch · left fist", f:"A", x:0,y:0},
+  {m:"Left foot → D, turn counter-clockwise", s:"Left walking stance", t:"Low block · left forearm", f:"D", x:0,y:1},
+  {m:"Right foot → D", s:"Right walking stance", t:"High punch · right fist", f:"D", x:0,y:2},
+  {m:"Left foot → D", s:"Left walking stance", t:"High punch · left fist", f:"D", x:0,y:3},
+  {m:"Right foot → D", s:"Right walking stance", t:"High punch · right fist", f:"D", x:0,y:4},
+  {m:"Left foot → E, turn counter-clockwise", s:"Right L-stance", t:"Twin forearm block", f:"E", x:-1,y:4},
+  {m:"Right foot → E", s:"Right walking stance", t:"High punch · right fist", f:"E", x:-2,y:4},
+  {m:"Right foot → F, turn clockwise", s:"Left L-stance", t:"Twin forearm block", f:"F", x:-1,y:4},
+  {m:"Left foot → F", s:"Left walking stance", t:"High punch · left fist", f:"F", x:0,y:4},
+  {m:"Left foot → C, turn counter-clockwise", s:"Left walking stance", t:"Low block · left forearm", f:"C", x:0,y:3},
+  {m:"Stay in place", s:"Left walking stance", t:"Rising block · left forearm", f:"C", x:0,y:3},
+  {m:"Right foot → C", s:"Right walking stance", t:"Rising block · right forearm", f:"C", x:0,y:2},
+  {m:"Left foot → C", s:"Left walking stance", t:"Rising block · left forearm", f:"C", x:0,y:1},
+  {m:"Right foot → C", s:"Right walking stance", t:"Rising block · right forearm", f:"C", x:0,y:0},
+  {m:"Left foot → B, turn counter-clockwise", s:"Right L-stance", t:"Middle side strike · left knife-hand", f:"B", x:-1,y:0},
+  {m:"Right foot → B", s:"Right walking stance", t:"High punch · right fist", f:"B", x:-2,y:0},
+  {m:"Right foot → A, turn clockwise", s:"Left L-stance", t:"Middle side strike · right knife-hand", f:"A", x:-1,y:0},
+  {m:"Left foot → A", s:"Left walking stance", t:"High punch · left fist", f:"A", x:0,y:0}
+ ]}
+};
+
+DATA.kkPoomsae = [
+ {name:"Taegeuk Il Jang", hg:"태극 1장", trigram:"Geon · heaven", level:"Color belt"},
+ {name:"Taegeuk I Jang", hg:"태극 2장", trigram:"Tae · joyfulness (lake)", level:"Color belt"},
+ {name:"Taegeuk Sam Jang", hg:"태극 3장", trigram:"Ri · fire", level:"Color belt"},
+ {name:"Taegeuk Sa Jang", hg:"태극 4장", trigram:"Jin · thunder", level:"Color belt"},
+ {name:"Taegeuk O Jang", hg:"태극 5장", trigram:"Seon · wind", level:"Color belt"},
+ {name:"Taegeuk Yuk Jang", hg:"태극 6장", trigram:"Gam · water", level:"Color belt"},
+ {name:"Taegeuk Chil Jang", hg:"태극 7장", trigram:"Gan · mountain", level:"Color belt"},
+ {name:"Taegeuk Pal Jang", hg:"태극 8장", trigram:"Gon · earth", level:"Color belt"},
+ {name:"Koryo", hg:"고려", level:"1st Dan"}, {name:"Keumgang", hg:"금강", level:"2nd Dan"}, {name:"Taebaek", hg:"태백", level:"3rd Dan"},
+ {name:"Pyongwon", hg:"평원", level:"4th Dan"}, {name:"Sipjin", hg:"십진", level:"5th Dan"}, {name:"Jitae", hg:"지태", level:"6th Dan"},
+ {name:"Cheonkwon", hg:"천권", level:"7th Dan"}, {name:"Hansu", hg:"한수", level:"8th Dan"}, {name:"Ilyeo", hg:"일여", level:"9th Dan"}
+];
+
+DATA.belts = [
+ {rank:"10th Gup", color:"White", c:["#f4f1ea"], tul:null},
+ {rank:"9th Gup", color:"White · yellow stripe", c:["#f4f1ea","#e8c33a"], tul:"chon-ji"},
+ {rank:"8th Gup", color:"Yellow", c:["#e8c33a"], tul:"dan-gun"},
+ {rank:"7th Gup", color:"Yellow · green stripe", c:["#e8c33a","#3f8f4f"], tul:"do-san"},
+ {rank:"6th Gup", color:"Green", c:["#3f8f4f"], tul:"won-hyo"},
+ {rank:"5th Gup", color:"Green · blue stripe", c:["#3f8f4f","#2f5fa8"], tul:"yul-gok"},
+ {rank:"4th Gup", color:"Blue", c:["#2f5fa8"], tul:"joong-gun"},
+ {rank:"3rd Gup", color:"Blue · red stripe", c:["#2f5fa8","#b5322a"], tul:"toi-gye"},
+ {rank:"2nd Gup", color:"Red", c:["#b5322a"], tul:"hwa-rang"},
+ {rank:"1st Gup", color:"Red · black stripe", c:["#b5322a","#111"], tul:"choong-moo"},
+ {rank:"1st Dan", color:"Black", c:["#111"], tul:"kwang-gae"}
+];
+DATA.beltMeaning = [
+ ["White","Innocence — the beginner with no prior knowledge."],
+ ["Yellow","The earth, from which a plant sprouts and roots as the foundation is laid."],
+ ["Green","The plant's growth as skill begins to develop."],
+ ["Blue","Heaven, toward which the plant matures into a towering tree."],
+ ["Red","Danger — cautioning the student toward control and warning the opponent away."],
+ ["Black","The opposite of white: maturity and proficiency, and imperviousness to darkness and fear."]
+];
+
+DATA.stances = [
+ {en:"Walking stance", ko:"Gunnun sogi", kk:"Ap-kubi (front stance) — similar role", spec:"1½ shoulder widths long (big toe to big toe), 1 width wide. Front knee over heel, rear leg straight, weight 50/50. Front toes forward, rear foot ~25° out.", src:"ENC Vol. II, Stance"},
+ {en:"L-stance", ko:"Niunja sogi", kk:"Dwit-kubi (back stance) — similar role", spec:"~1½ shoulder widths from rear footsword to front toes, feet near right angle, both ~15° inward. Rear knee over toes. Weight ~70% rear / 30% front. Always half-facing.", src:"ENC Vol. II, Stance"},
+ {en:"Sitting stance", ko:"Annun sogi", kk:"Juchum-seogi (horse-riding stance)", spec:"Feet ~1½ shoulder widths apart, toes forward, weight even, knees pushed out until kneecaps are over the balls of the feet.", src:"ENC Vol. II, Stance"},
+ {en:"Fixed stance", ko:"Gojung sogi", spec:"Like an L-stance but weight even on both legs, ~1½ shoulder widths between feet.", src:"ENC Vol. II, Stance"},
+ {en:"Rear foot stance", ko:"Dwitbal sogi", kk:"Beom-seogi (tiger stance) — similar role", spec:"One shoulder width between small toes, rear knee over toes, front foot light and ready to kick or adjust distance.", src:"ENC Vol. II, Stance"},
+ {en:"Bending stance", ko:"Guburyo sogi", spec:"A one-leg stance: the standing knee is bent and the other foot is drawn up beside it, ready to deliver a side piercing or side thrusting kick.", src:"ENC Vol. II, Stance"},
+ {en:"X-stance", ko:"Kyocha sogi", kk:"Kkoa-seogi", spec:"Cross one foot over or behind the other, touching lightly with the ball of the foot; weight on the stationary foot.", src:"ENC Vol. II, Stance"},
+ {en:"Close stance", ko:"Moa sogi", kk:"Moa-seogi", spec:"Feet together, toes forward.", src:"ENC Vol. II, Stance"},
+ {en:"Parallel stance", ko:"Narani sogi", kk:"Naranhi-seogi", spec:"Feet parallel at shoulder width, toes forward.", src:"ENC Vol. II, Stance"},
+ {en:"Attention stance", ko:"Charyot sogi", kk:"Charyeot", spec:"Heels together, toes apart ~45°, hands at sides — the posture for bowing.", src:"ENC Vol. II, p. 160"}
+];
+
+// Glossary: en, ko = ITF romanisation (ENC), kk = Kukkiwon romanisation where commonly used, cat, src
+DATA.glossary = [
+ // numbers
+ ["One","Hana","Hana","Counting"],["Two","Dool","Dul","Counting"],["Three","Set","Set","Counting"],["Four","Net","Net","Counting"],["Five","Dasaul","Daseot","Counting"],
+ ["Six","Yosaul","Yeoseot","Counting"],["Seven","Ilgop","Ilgop","Counting"],["Eight","Yodoll","Yeodeol","Counting"],["Nine","Ahop","Ahop","Counting"],["Ten","Yol","Yeol","Counting"],
+ // commands
+ ["Attention","Charyot","Charyeot","Commands"],["Bow","Kyong ye","Gyeongrye","Commands"],["Ready","Junbi","Junbi","Commands"],["Begin","Si jak","Sijak","Commands"],
+ ["Stop","Goman","Geuman","Commands"],["Return to ready","Baro","Baro","Commands"],["At ease","Swiyo","Swieo","Commands"],["Dismiss","Haesan","Haesan","Commands"],
+ ["About turn","Dwiro torah","Dwiro dora","Commands"],["Spirit shout","Kihap","Kihap","Commands"],
+ // places & people
+ ["Training hall","Do jang","Dojang","Training"],["Practice suit","Do bok","Dobok","Training"],["Belt","Ti","Tti","Training"],["Instructor","Sabum","Sabeom-nim","Training"],
+ ["Student","Jeja","Jeja","Training"],["Pattern","Tul","Poomsae","Training"],["Sparring","Matsogi","Gyeorugi","Training"],["Self-defence","Hosin sul","Hosinsul","Training"],
+ ["Breaking / power test","Wirok","Gyeokpa","Training"],["Fundamental exercise","Gibon yonsup","Gibon dongjak","Training"],["Free sparring","Jayu matsogi","Jayu gyeorugi","Training"],
+ ["Three-step sparring","Sambo matsogi","Sebeon gyeorugi","Training"],["Two-step sparring","Ibo matsogi","Dubeon gyeorugi","Training"],["One-step sparring","Ilbo matsogi","Hanbeon gyeorugi","Training"],
+ ["Semi-free sparring","Ban jayu matsogi","","Training"],["Calisthenics","Dosoo dallyon","","Training"],["Ready posture","Junbi jase","Junbi","Training"],
+ // levels & sections
+ ["High section","Nopunde","Eolgul","Targets"],["Middle section","Kaunde","Momtong","Targets"],["Low section","Najunde","Arae","Targets"],["Vital spots","Kupso","Geupso","Targets"],
+ ["Front","Ap","Ap","Directions"],["Side","Yop","Yeop","Directions"],["Back / rear","Dwit","Dwit","Directions"],["Inward","Anuro","An","Directions"],["Outward","Bakuro","Bakkat","Directions"],
+ ["Obverse (same side)","Baro","Baro","Directions"],["Reverse (opposite side)","Bandae","Bandae","Directions"],["Twin / double","Sang","Sang","Directions"],["Flying","Twimyo","Twieo","Directions"],
+ // tools
+ ["Forefist","Ap joomuk","Jumeok","Tools"],["Back fist","Dung joomuk","Deung-jumeok","Tools"],["Knife-hand","Sonkal","Sonnal","Tools"],["Reverse knife-hand","Sonkal dung","Sonnal-deung","Tools"],
+ ["Palm","Sonbadak","Batangson","Tools"],["Fingertip","Sonkut","Pyeonsonkkeut","Tools"],["Elbow","Palkup","Palkup","Tools"],["Forearm","Palmok","Palmok","Tools"],
+ ["Inner forearm","An palmok","An-palmok","Tools"],["Outer forearm","Bakat palmok","Bakkat-palmok","Tools"],["Knee","Moorup","Mureup","Tools"],["Ball of the foot","Ap kumchi","Apchuk","Tools"],
+ ["Footsword","Balkal","Balnal","Tools"],["Back heel","Dwit chook","Dwichuk","Tools"],["Instep","Baldung","Baldeung","Tools"],["Open fist","Pyun joomuk","Pyeon-jumeok","Tools"],
+ ["Arc-hand","Bandal son","Agwison","Tools"],["Bear hand","Gomson","Gomson","Tools"],
+ // stances
+ ["Stance","Sogi","Seogi","Stances"],["Walking stance","Gunnun sogi","Ap-kubi*","Stances"],["L-stance","Niunja sogi","Dwit-kubi*","Stances"],["Sitting stance","Annun sogi","Juchum-seogi","Stances"],
+ ["Fixed stance","Gojung sogi","","Stances"],["Rear foot stance","Dwitbal sogi","Beom-seogi*","Stances"],["X-stance","Kyocha sogi","Kkoa-seogi","Stances"],["Close stance","Moa sogi","Moa-seogi","Stances"],
+ ["Parallel stance","Narani sogi","Naranhi-seogi","Stances"],["One-leg stance","Waebal sogi","Hakdari-seogi*","Stances"],["Bending stance","Guburyo sogi","","Stances"],["Diagonal stance","Sasun sogi","","Stances"],
+ ["Vertical stance","Soojik sogi","","Stances"],["Low stance","Nachuo sogi","","Stances"],
+ // blocks
+ ["Block","Makgi","Makgi","Blocks"],["Low block","Najunde makgi","Arae makgi","Blocks"],["Rising block","Chookyo makgi","Eolgul makgi","Blocks"],["Middle block","Kaunde makgi","Momtong makgi","Blocks"],
+ ["Guarding block","Daebi makgi","","Blocks"],["Twin forearm block","Sang palmok makgi","","Blocks"],["X-fist / X block","Kyocha joomuk makgi","Eotgeoreo makgi","Blocks"],["Wedging block","Hechyo makgi","Hecheo makgi","Blocks"],
+ ["Pressing block","Noollo makgi","Nulleo makgi","Blocks"],["Hooking block","Golcho makgi","","Blocks"],["Circular block","Dollimyo makgi","","Blocks"],["Checking block","Momchau makgi","","Blocks"],
+ ["U-shape block","Mongdung-i makgi","","Blocks"],["W-shape block","San makgi","Santeul makgi","Blocks"],["Scooping block","Duro makgi","","Blocks"],["Pushing block","Miro makgi","","Blocks"],
+ // attacks
+ ["Punch","Jirugi","Jireugi","Attacks"],["Strike","Taerigi","Chigi","Attacks"],["Thrust","Tulgi","Jjireugi","Attacks"],["Upset punch","Dwijibo jirugi","","Attacks"],
+ ["Vertical punch","Sewo jirugi","","Attacks"],["Turning punch","Dollyo jirugi","Dollyeo jireugi","Attacks"],["Angle punch","Giokja jirugi","","Attacks"],["Double punch","Doo jirugi","Dubeon jireugi","Attacks"],
+ // kicks
+ ["Kick","Chagi","Chagi","Kicks"],["Front snap kick","Apcha busigi","Ap-chagi","Kicks"],["Side piercing kick","Yopcha jirugi","Yeop-chagi","Kicks"],["Side thrusting kick","Yopcha tulgi","","Kicks"],
+ ["Turning kick","Dollyo chagi","Dollyeo-chagi","Kicks"],["Back piercing kick","Dwitcha jirugi","Dwit-chagi","Kicks"],["Reverse turning kick","Bandae dollyo chagi","Dwi-huryeo-chagi","Kicks"],["Downward kick","Naeryo chagi","Naeryeo-chagi","Kicks"],
+ ["Crescent kick","Bandal chagi","Bandal-chagi","Kicks"],["Hooking kick","Golcho chagi","Huryeo-chagi","Kicks"],["Twisting kick","Bituro chagi","Biteureo-chagi","Kicks"],["Pushing kick","Milgi","Mireo-chagi","Kicks"],
+ ["Rising kick","Cha olligi","","Kicks"],["Checking kick","Cha momchugi","","Kicks"],["Pressing kick","Noollo chagi","","Kicks"],["Consecutive kick","Yonsok chagi","Yeonsok-chagi","Kicks"],
+ ["Flying kick","Twimyo chagi","Twieo-chagi","Kicks"],["Skip kick","Durokamyo chagi","","Kicks"],["Sweeping kick","Suroh chagi","Huryeo-chagi","Kicks"],["Vertical kick","Sewo chagi","","Kicks"],
+ // theory
+ ["Theory of power","Him ui wolli","","Theory"],["Reaction force","Bandong ryok","","Theory"],["Concentration","Jip joong","","Theory"],["Equilibrium","Kyun hyung","","Theory"],
+ ["Breath control","Hohup jojul","","Theory"],["Mass","Zilyang","","Theory"],["Speed","Sokdo","","Theory"],["Tenets","Jungshin","","Theory"]
+];
+DATA.glossaryNote = "ITF column follows the romanisation printed in the Encyclopedia's volume indexes (Vols. II–VII). Kukkiwon column uses common Revised Romanisation; * marks a near-equivalent technique rather than an identical one. Every row needs native-speaker and lineage review before release.";
+
+
+DATA.charter = {src:"ENC Vol. I, Charter of Taekwon-Do (Taekwon-Do Hun Jang), pp. 12–13", parts:[
+ ["Preamble","Taekwon-Do aims at moral rearmament, intellect, graceful technique, power and physical beauty, so it can be part of daily life like breathing and thinking. The founder sets out its philosophy so morality, beauty and power can flourish together."],
+ ["Part 1","Scientific practice improves health and nourishes the intellect, and equips one to help others in the cause of justice, toward a happier, more peaceful society."],
+ ["Part 2","To come to terms with life's hard aspects and with death, keep studying for power, grace and a larger spiritual life; the motivation to study is itself an inheritance for later generations."],
+ ["Part 3","Stay humble and merciful rather than greedy; never compromise principles or act from selfish motives, so the art passes on free, independent and pure."],
+ ["Part 4","All students follow the same rules and are judged by the same standards whatever their station, origin or religion, showing the equality and brotherhood of people."],
+ ["Part 5","Against a society absorbed in material excess and dependence on machines, dedication to the art promotes a moral society of self-discipline, sacrifice and devotion."],
+ ["Part 6","Those who serve others and follow their conscience help their juniors and respect their instructors and seniors."],
+ ["Conclusion","A beginning is a large part of any undertaking: act whenever acting would benefit society, and you yourself benefit most."]]};
+
+DATA.ideals = {src:"ENC Vol. I, History of Taekwon-Do, pp. 40–41", intro:"Formulated by Gen. Choi during the 1959 overseas demonstration tour:", items:[
+ "With an upright mind and a strong body, gain the confidence to stand for justice at all times.",
+ "Unite with everyone in common brotherhood, regardless of religion, race, nation or ideology.",
+ "Help build a peaceful society where justice, morality, trust and humanism prevail."]};
+
+DATA.principles = {src:"ENC Vol. I, History of Taekwon-Do, pp. 42–43", intro:"The twelve design principles Gen. Choi says every technique was built on — what makes Taekwon-Do “a martial art, an aesthetic art, a science and sport”:", items:[
+ "Maximum power, following scientific formulas and kinetic energy.",
+ "Principles clear enough that even a layperson can tell correct from incorrect movement.",
+ "Exactly defined distance and angle for every movement.",
+ "A clear, simple purpose and method for each movement, to make teaching easy.",
+ "Rational teaching methods so everyone — young and old, men and women — can benefit.",
+ "Correct breathing that adds speed and reduces fatigue.",
+ "The ability to attack any vital spot and defend against any attack.",
+ "Attacking tools clearly defined and grounded in the body's structure.",
+ "Movements easy enough to enjoy as sport and recreation.",
+ "Special care for health and injury prevention.",
+ "Harmony and rhythm, so the art is aesthetically pleasing.",
+ "Each pattern movement expressing the character of the person it is named after."]};
+
+DATA.spiritual = {src:"ENC Vol. I, History of Taekwon-Do, p. 41", text:"Gen. Choi describes the spiritual side as fusing oneself with the ideals of Taekwon-Do and understanding the full meaning of each pattern. If practitioners see themselves as one with the art, they will respect it as they respect their own bodies and never use it dishonourably — “life and work become one.” He also says the pattern names honour notable figures from Korean history, so understanding them shows the art is for self-defence and justice only."};
+
+DATA.tenetDetail = {src:"ENC Vol. I, Explanation of Tenets, pp. 15–17", items:[
+ ["Courtesy","Nine elements: mutual concession; shame at one's own faults rather than contempt for others'; politeness; a sense of justice and humanity; distinguishing instructor and student, senior and junior, elder and younger; etiquette; respect for others' possessions; fairness and sincerity; declining doubtful gifts."],
+ ["Integrity","Defined as knowing right from wrong and feeling guilt when wrong. Lapses include teaching improper technique, “fixing” breaking boards, hiding poor technique behind fancy halls or flattery, requesting or buying rank, seeking rank for ego, teaching for material gain, not living up to one's words, and being too proud to ask juniors' opinions."],
+ ["Perseverance","Set a goal — a degree or a perfected technique — and persist. Choi cites Robert Bruce and the spider, and Confucius: impatience in small matters rarely brings success in great ones."],
+ ["Self-control","Vital in sparring and in personal affairs; living beyond one's capability is also a lack of it. Choi cites Lao-Tzu: the stronger person is the one who wins over oneself."],
+ ["Indomitable spirit","Courage when principles meet overwhelming odds, as with Leonidas at Thermopylae. A serious student stays modest and honest but faces injustice without fear or hesitation."]]};
+
+DATA.theory = [
+ {en:"Reaction force", ko:"Bandong ryok", gist:"Pulling the opposite hand back as the attacking hand goes out — and an opponent moving in — multiplies impact."},
+ {en:"Concentration", ko:"Jip joong", gist:"Focus force onto the smallest target area and into the shortest time."},
+ {en:"Equilibrium", ko:"Kyun hyung", gist:"Keep the body balanced — static and dynamic stability — so force is not lost."},
+ {en:"Breath control", ko:"Hohup jojul", gist:"Exhale sharply at impact; never inhale at the moment of attack or block."},
+ {en:"Mass", ko:"Zilyang", gist:"Use the whole body's weight — hip twist and the knee-spring 'sine wave' — not just the limb."},
+ {en:"Speed", ko:"Sokdo", gist:"The most important factor: force rises with the square of speed."}
+];
+DATA.theorySrc = "ENC Vol. II, Theory of Power (pp. 14–48)";
+
+DATA.wt2026 = {
+ title:"WT Kyorugi rule changes — Tashkent General Assembly (April 2026)",
+ effective:"Ratified April 10, 2026; WT implementation from June 2026; USA Taekwondo from the American Open East (May 29, 2026).",
+ items:[
+  ["Point gap raised to 15","The gap that ends a round goes from 12 to 15 points, because spinning head kicks rose from 5 to 6 points."],
+  ["Double points for passivity","A gam-jeom for passive behaviour in the last 10 seconds of a round gives the opponent 2 points (still counted as 1 gam-jeom). Passive: crossing the boundary, falling, avoiding the match, a rejected technical-card request."],
+  ["Boundary line","Any part of the foot crossing the boundary line now draws a gam-jeom — not only the whole foot."],
+  ["Winner declaration","Athletes return to centre; “Chung, Hong”, then “Cha-ryeot” and “Kyeong-rye” before the winner is announced. Helmets may stay on or come off for the bow."],
+  ["Technical card (green)","Coaches now hold a challenge card (blue/red) for referee calls and a technical card (green) for time issues, phantom points, scoreboard entry and PSS tests. The green card is always kept; a rejected request gives the athlete a gam-jeom for misconduct (2 points to the opponent in the last 10 seconds)."]
+ ],
+ src:"USA Taekwondo April 2026 Rules Update (supplied PDF)"
+};
+
+DATA.history = [
+ ["Age 15","Born frail, Choi begins Taek Kyon on the advice of his calligraphy teacher.","ENC Vol. I, p. 39"],
+ ["1938","Leaves for Japan to study and resolves to earn a Karate black belt there.","ENC Vol. I, p. 39"],
+ ["1940s","Initiates the Pyongyang Student Soldiers' independence movement and is jailed by the Japanese army.","ENC Vol. I, p. 39"],
+ ["Jan 1946","Commissioned a second lieutenant; posted to the 4th Infantry Regiment, Kwangju, where he teaches Karate to his soldiers and resolves to create a Korean martial art.","ENC Vol. I, p. 39"],
+ ["Mar 1946","Begins systematically developing new techniques.","ENC Vol. I, p. 40"],
+ ["1954","Foundation of the new art nearly complete by year's end.","ENC Vol. I, p. 40"],
+ ["11 Apr 1955","The art is named “Taekwon-Do”.","ENC Vol. I, p. 40"],
+ ["Mar 1959","Leads the military demonstration team to South Vietnam and Taiwan — Korea's first such tour — and sets out the three ideals.","ENC Vol. I, p. 40"],
+ ["1965","English edition, Taekwon-Do: The Art of Self Defence — 20 Chang-Hon patterns plus Shotokan-derived forms.","1965 book"],
+ ["1966","International Taekwon-Do Federation founded in Seoul.","General sources"],
+ ["1973","World Taekwondo Federation (now WT) founded; Kukkiwon becomes the Korean curriculum authority.","General sources"],
+ ["1983","15-volume Encyclopedia of Taekwon-Do published.","General sources"],
+ ["1986","Juche replaces Ko-Dang in the ITF syllabus.","General sources"],
+ ["2000","Taekwondo (WT rules) becomes a full Olympic sport in Sydney.","General sources"],
+ ["2002","Gen. Choi dies; the ITF later splits into three federations of the same name.","General sources"],
+ ["2026","WT ratifies the Tashkent Kyorugi rule changes.","USAT26"]
+];
+DATA.historyNote = "Entries to 1959 follow Gen. Choi's own account in Vol. I. Historians and the Kukkiwon tradition give other accounts of Taekwondo's origins (e.g. the roles of the post-war kwans and Taekkyeon), so the full app should present these as perspectives, with sources.";
+
+DATA.sources = [
+ {k:"ENC", t:"Choi Hong Hi — Encyclopedia of Taekwon-Do, 15 vols. (supplied scan; Vol. I image-only, OCR-recovered)", role:"Primary ITF authority", status:"Copyrighted · license or cite-and-paraphrase"},
+ {k:"1965", t:"Choi Hong Hi — Taekwon-Do: The Art of Self Defence (1965)", role:"Historical edition — evolution of the syllabus", status:"Copyrighted (© 1965) · scanned, OCR needed"},
+ {k:"BTT", t:"Basic Taekwondo Techniques and Terminology (111 pp., Kukkiwon-style)", role:"Kukkiwon terminology cross-reference", status:"Provenance unknown · verify before use"},
+ {k:"USAT26", t:"USA Taekwondo — April 2026 Rules Update (WT, Tashkent)", role:"Current WT Kyorugi rules", status:"Public summary · cite; link to WT originals"},
+ {k:"WT", t:"World Taekwondo Competition Rules & Interpretation (in force June 1, 2026)", role:"Authoritative WT rules", status:"To license/link"},
+ {k:"KKW", t:"Kukkiwon Taekwondo Textbook & Textbook of Taekwondo Poomsae", role:"Authoritative Kukkiwon curriculum", status:"To license"},
+ {k:"ITF", t:"Current ITF federation syllabi & tournament rules", role:"Federation-specific variations", status:"To partner"}
+];
+
+</script>
+<script>
+const $ = (s,el=document)=>el.querySelector(s);
+const esc = s => String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const store = {
+  get(k,d){try{const v=localStorage.getItem("dj_"+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+  set(k,v){try{localStorage.setItem("dj_"+k,JSON.stringify(v))}catch(e){}}
+};
+const state = { belt: store.get("belt",1), learned: store.get("learned",{}), reps: store.get("reps",{}), terms: store.get("terms",{}), streak: store.get("streak",{days:[]}) };
+function save(){ ["belt","learned","reps","terms","streak"].forEach(k=>store.set(k,state[k])); }
+function logPractice(){ const d=new Date().toISOString().slice(0,10); if(!state.streak.days.includes(d)){state.streak.days.push(d); save();} }
+function streakCount(){ const set=new Set(state.streak.days); let n=0; const d=new Date(); while(set.has(d.toISOString().slice(0,10))){n++; d.setDate(d.getDate()-1);} return n; }
+
+function speak(text){
+  try{ const u=new SpeechSynthesisUtterance(text); u.lang="ko-KR"; u.rate=.85; speechSynthesis.cancel(); speechSynthesis.speak(u);}catch(e){}
+}
+
+const NAV = [
+  ["home","도","Home"],["patterns","형","Patterns"],["glossary","말","Terms"],["techniques","기","Technique"],["philosophy","정","Philosophy"],
+  ["path","띠","Belt path"],["train","련","Train"],["quiz","시","Quiz"],["rules","규","Rules"],["about","역","History"]
+];
+const BOTTOM = ["home","patterns","glossary","train","quiz"];
+function renderNav(cur){
+  $("#side").innerHTML = `<div class="brand"><div class="seal">道</div><div><b>Dojang</b><small>Taekwon-Do study</small></div></div>` +
+    NAV.map(([id,ic,l])=>`<a class="nav-a ${cur===id?"on":""}" href="#${id}"><span class="ic">${ic}</span>${l}</a>`).join("") +
+    `<div class="foot">Prototype · content paraphrased from Gen. Choi's Encyclopedia & current WT rules, with sources on every item.</div>`;
+  $("#bottom").innerHTML = NAV.filter(n=>BOTTOM.includes(n[0])).map(([id,ic,l])=>`<a class="${cur===id?"on":""}" href="#${id}"><span class="ic">${ic}</span>${l}</a>`).join("");
+}
+const tulById = id => DATA.itfTul.find(t=>t.id===id);
+function beltChip(b){ const c=b.c; return `<span class="beltchip" style="background:${c[0]}">${c[1]?`<i style="background:${c[1]}"></i>`:""}</span>`; }
+
+/* ---------------- views ---------------- */
+const V = {};
+
+V.home = () => {
+  const b = DATA.belts[state.belt]; const next = DATA.belts[Math.min(state.belt+1, DATA.belts.length-1)];
+  const learnedCount = Object.values(state.learned).filter(Boolean).length;
+  const termsKnown = Object.values(state.terms).filter(Boolean).length;
+  const tenet = DATA.tenets[new Date().getDate()%5];
+  const focus = b.tul ? tulById(b.tul) : tulById("chon-ji");
+  return `
+  <div class="kicker">Today · ${new Date().toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"})}</div>
+  <div class="hero">
+    <div class="card big">
+      <div class="row"><span class="pill red">Your rank</span>${beltChip(b)} <span class="muted">${b.rank} · ${b.color}</span></div>
+      <h1 style="margin-top:16px">Today's focus:<br><span class="hg">${focus.hg}</span> ${focus.name}</h1>
+      <p class="lead">${focus.moves} movements · ${focus.rank}. ${esc(focus.meaning.split(".")[0])}.</p>
+      <div class="row" style="margin-top:18px">
+        <a class="btn pri" href="#pattern-${focus.id}">Practise pattern</a>
+        <a class="btn" href="#train">Start a session</a>
+        <a class="btn" href="#quiz">5-minute quiz</a>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="card"><div class="dim small">Practice streak</div><div class="stat">${streakCount()} <span class="small muted">days</span></div></div>
+      <div class="card"><div class="dim small">Patterns marked learned</div><div class="stat">${learnedCount}<span class="small muted"> / ${DATA.itfTul.length}</span></div><div class="bar"><i style="width:${learnedCount/24*100}%"></i></div></div>
+      <div class="card"><div class="dim small">Terms mastered</div><div class="stat">${termsKnown}<span class="small muted"> / ${DATA.glossary.length}</span></div><div class="bar"><i style="width:${termsKnown/DATA.glossary.length*100}%"></i></div></div>
+    </div>
+  </div>
+  <h2>Tenet of the day</h2>
+  <div class="card"><div class="row"><span class="hg" style="font-size:26px">${tenet.hg}</span><div><h3>${tenet.en}</h3><div class="muted small">${tenet.ko}</div></div></div><p style="margin-top:10px">${tenet.gist}</p><div class="src">${tenet.src}</div></div>
+  <h2>Next grading</h2>
+  <div class="card"><div class="row">${beltChip(next)} <b>${next.rank}</b> <span class="muted">· ${next.color}</span></div>
+  <p class="muted" style="margin-top:8px">Required pattern: ${next.tul?`<a href="#pattern-${next.tul}">${tulById(next.tul).name}</a>`:"—"}. Review the terminology and fundamentals on your <a href="#path">belt path</a>.</p></div>
+  <h2>Explore</h2>
+  <div class="grid g4">
+    ${[["patterns","24 ITF tul + 17 Kukkiwon poomsae"],["glossary",DATA.glossary.length+" terms, ITF & Kukkiwon romanisation"],["techniques","Stances, theory of power, tenets"],["rules","2026 WT Kyorugi changes"]].map(([h,t])=>`<a class="card click" style="text-decoration:none" href="#${h}"><h3>${NAV.find(n=>n[0]===h)[2]}</h3><p class="muted small" style="margin-top:4px">${t}</p></a>`).join("")}
+  </div>`;
+};
+
+V.patterns = () => {
+  const tab = store.get("ptab","itf");
+  const itf = DATA.itfTul.map((t,i)=>{
+    const has = DATA.sequences[t.id]; const L = state.learned[t.id];
+    return `<div class="card click" onclick="location.hash='pattern-${t.id}'">
+      <div class="row" style="justify-content:space-between"><span class="pill ${i<9?"":"gold"}">${t.rank}</span>${L?'<span class="pill" style="color:#9fd8ad">✓ learned</span>':""}</div>
+      <div style="margin-top:12px"><span class="hg" style="font-size:22px">${t.hg}</span></div>
+      <h3 style="font-size:18px;font-family:var(--serif)">${t.name}</h3>
+      <div class="muted small">${t.moves} movements · ENC Vol. ${t.vol}${has?' · <span style="color:var(--seal2)">step player</span>':""}</div>
+    </div>`}).join("");
+  const kk = DATA.kkPoomsae.map(p=>`<div class="card"><span class="pill ${p.level.includes("Dan")?"gold":""}">${p.level}</span><div style="margin-top:12px"><span class="hg" style="font-size:20px">${p.hg}</span></div><h3 style="font-family:var(--serif);font-size:17px">${p.name}</h3>${p.trigram?`<div class="muted small">Trigram: ${p.trigram}</div>`:""}<div class="dim small" style="margin-top:6px">Sequence: pending Kukkiwon license</div></div>`).join("");
+  const hist = DATA.historicTul.map(p=>`<div class="card"><span class="pill">Historical</span><div style="margin-top:12px"><span class="hg" style="font-size:20px">${p.hg}</span></div><h3 style="font-family:var(--serif);font-size:17px">${p.name}</h3><div class="muted small">${p.moves} movements</div><p class="small" style="margin-top:8px">${p.note}</p><div class="src">${p.src}</div></div>`).join("") +
+    `<div class="card"><span class="pill">1965 edition</span><h3 style="margin-top:12px">Shotokan-derived forms</h3><p class="small muted" style="margin-top:6px">The 1965 book also taught Sho-Rin / Sho-Rei forms (Hei-An, Bat-Sai, En-Bi, Ro-Hai, Kouh-Shang-Kouh, Tet-Ki, Jit-Te, Hang-Getsu, Ji-On) alongside 20 Chang-Hon patterns — a record of how the syllabus evolved.</p><div class="src">1965 Table of Contents, pp. 216–238</div></div>`;
+  return `<div class="kicker">Patterns · Tul · Poomsae</div><h1>Patterns</h1>
+  <p class="lead">Every pattern is labelled by lineage. Gen. Choi's 24 Chang-Hon tul are the spine; Kukkiwon poomsae sit alongside for students in WT schools.</p>
+  <div class="tabs">${[["itf","ITF · Chang-Hon (24)"],["kk","Kukkiwon / WT (17)"],["hist","Historical"]].map(([k,l])=>`<button class="tab ${tab===k?"on":""}" onclick="store.set('ptab','${k}');route()">${l}</button>`).join("")}</div>
+  ${tab==="itf"?`<p class="muted small" style="margin-bottom:12px">“The 24 patterns represent 24 hours, one day, or all my life.” — Gen. Choi, ENC Vol. VIII</p><div class="grid g4">${itf}</div>`:""}
+  ${tab==="kk"?`<div class="note">Kukkiwon poomsae are listed for completeness. Move-by-move content would come from the Kukkiwon Textbook under license.</div><div class="grid g4">${kk}</div>`:""}
+  ${tab==="hist"?`<div class="grid g3">${hist}</div>`:""}`;
+};
+
+/* pattern detail */
+let P = {id:null, i:-1, timer:null, speed:1.6};
+const DIRV = {A:[1,0],B:[-1,0],D:[0,1],C:[0,-1],E:[-1,0],F:[1,0]};
+V.pattern = (id) => {
+  const t = tulById(id); if(!t) return V.patterns();
+  const seq = DATA.sequences[id];
+  if(P.id!==id){ P.id=id; P.i=-1; stopPlay(); }
+  const reps = state.reps[id]||0;
+  const head = `<a href="#patterns" class="muted small" style="text-decoration:none">← All patterns</a>
+    <div class="row" style="margin-top:10px;align-items:flex-end;gap:16px"><span class="hg" style="font-size:44px;line-height:1">${t.hg}</span><div><div class="kicker" style="margin:0">${t.rank} · ${t.belt}</div><h1>${t.name}</h1></div></div>
+    <p class="lead">${esc(t.meaning)}</p>
+    <div class="row" style="margin-top:12px"><span class="pill">${t.moves} movements</span><span class="pill">ENC Vol. ${t.vol}</span>${t.diagram?`<span class="pill gold">Diagram ${t.diagram}</span>`:""}${t.note?`<span class="pill red">${t.note}</span>`:""}</div>`;
+  const practice = `<div class="card" style="margin-top:14px"><div class="row" style="justify-content:space-between">
+      <div class="counter"><button class="btn sm" onclick="rep('${id}',-1)">−</button><div><div class="n" id="repn">${reps}</div></div><button class="btn sm" onclick="rep('${id}',1)">+1 rep</button><span class="muted small">full repetitions logged</span></div>
+      <button class="btn sm ${state.learned[id]?"pri":""}" onclick="toggleLearned('${id}')">${state.learned[id]?"✓ Learned":"Mark learned"}</button></div></div>`;
+  if(!seq){
+    return head + practice + `<div class="note" style="margin-top:18px">The step player is built for Chon-Ji and Dan-Gun in this prototype. In the full app every pattern gets the same treatment, written from ENC Vol. ${t.vol} and reviewed by a certified instructor.</div>
+    <a class="btn" href="#pattern-chon-ji">Open Chon-Ji</a> <a class="btn" href="#pattern-dan-gun">Open Dan-Gun</a>`;
+  }
+  return head + `
+  <div class="pd" style="margin-top:22px">
+    <div>
+      <div class="floor" id="floor">${floorSVG(id)}</div>
+      <div class="ctrl">
+        <button class="btn sm" onclick="go(-1)">◀ Prev</button>
+        <button class="btn sm pri" id="playb" onclick="togglePlay()">▶ Play</button>
+        <button class="btn sm" onclick="go(1)">Next ▶</button>
+        <button class="btn sm" onclick="P.i=-1;stopPlay();paint()">Reset</button>
+        <label class="small muted row" style="gap:6px">Pace <input type="range" min="0.6" max="3" step="0.2" value="${P.speed}" oninput="P.speed=+this.value"></label>
+        <label class="small muted row" style="gap:6px"><input type="checkbox" id="voice" style="width:auto"> Count in Korean</label>
+      </div>
+      <div class="stepnow" id="stepnow"></div>
+    </div>
+    <div>
+      <ol class="steplist" id="steplist">
+        <li data-i="-1"><b>준비</b><div><div style="font-weight:600">Ready</div><div class="muted">${seq.ready}</div></div></li>
+        ${seq.steps.map((s,i)=>`<li data-i="${i}"><b>${i+1}</b><div><div style="font-weight:600">${s.t}</div><div class="muted">${s.s} · ${s.m}</div></div></li>`).join("")}
+        <li data-i="${seq.steps.length}"><b>끝</b><div><div style="font-weight:600">End</div><div class="muted">${seq.end}</div></div></li>
+      </ol>
+      <div class="src">${seq.src} — compact paraphrase; floor path is schematic</div>
+    </div>
+  </div>` + practice;
+};
+function floorSVG(id){
+  const seq = DATA.sequences[id]; const pts = seq.steps;
+  const xs=[0,...pts.map(p=>p.x)], ys=[0,...pts.map(p=>p.y)];
+  const minx=Math.min(...xs)-1.2,maxx=Math.max(...xs)+1.2,miny=Math.min(...ys)-1.2,maxy=Math.max(...ys)+1.2;
+  const span=Math.max(maxx-minx,maxy-miny); const cx=(minx+maxx)/2, cy=(miny+maxy)/2;
+  const S=400/span; const X=x=>200+(x-cx)*S, Y=y=>200-(y-cy)*S;
+  P.X=X; P.Y=Y; P.S=S;
+  let g="";
+  for(let x=Math.ceil(minx);x<=maxx;x++) g+=`<line x1="${X(x)}" y1="0" x2="${X(x)}" y2="400" stroke="#1d1d22"/>`;
+  for(let y=Math.ceil(miny);y<=maxy;y++) g+=`<line x1="0" y1="${Y(y)}" x2="400" y2="${Y(y)}" stroke="#1d1d22"/>`;
+  const topY = Math.max(...ys);
+  const lab = (t,x,y)=>`<text x="${x}" y="${y}" fill="#d9b25a" font-family="Noto Serif KR" font-weight="700" font-size="15" text-anchor="middle" dominant-baseline="middle">${t}</text>`;
+  let labels = lab("A",X(maxx)-12,Y(0)) + lab("B",X(minx)+12,Y(0)) + lab("D",X(0),Y(maxy)+14) + lab("C",X(0),Y(miny)-14);
+  if(id==="dan-gun") labels += lab("E",X(minx)+12,Y(topY)) + lab("F",X(maxx)-12,Y(topY));
+  return `<svg viewBox="0 0 400 400" aria-label="Floor diagram">${g}
+    <line x1="${X(minx)+24}" y1="${Y(0)}" x2="${X(maxx)-24}" y2="${Y(0)}" stroke="#3a3a44" stroke-width="2" stroke-dasharray="4 5"/>
+    ${labels}
+    <polyline id="trail" fill="none" stroke="#c23b2e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity=".85" points="${X(0)},${Y(0)}"/>
+    <g id="dots"></g>
+    <g id="me" style="transition:transform .45s cubic-bezier(.4,.1,.2,1)" transform="translate(${X(0)},${Y(0)})">
+      <g id="meRot" style="transition:transform .45s" transform="rotate(-90)">
+        <circle r="15" fill="#f2ece0"/><path d="M 7 -7 L 22 0 L 7 7 Z" fill="#c23b2e"/><circle r="5" fill="#121214"/>
+      </g>
+    </g>
+    <text x="12" y="22" fill="#77726a" font-size="11" font-family="Inter">Start · facing D</text>
+  </svg>`;
+}
+function paint(){
+  const seq = DATA.sequences[P.id]; if(!seq) return; const n=seq.steps.length;
+  const i=P.i;
+  const upto = seq.steps.slice(0, Math.max(0,Math.min(i+1,n)));
+  const pts=[[0,0],...upto.map(s=>[s.x,s.y])];
+  if(i>=n) pts.push([0,0]);
+  const tr=$("#trail"); if(!tr) return;
+  tr.setAttribute("points", pts.map(([x,y])=>`${P.X(x)},${P.Y(y)}`).join(" "));
+  $("#dots").innerHTML = upto.map((s,k)=>`<circle cx="${P.X(s.x)}" cy="${P.Y(s.y)}" r="${k===i?0:3.5}" fill="#c23b2e"/>`).join("");
+  const cur = i<0||i>=n ? {x:0,y:0,f:"D"} : seq.steps[i];
+  const ang = {A:0,B:180,D:-90,C:90,E:180,F:0}[cur.f];
+  $("#me").setAttribute("transform",`translate(${P.X(cur.x)},${P.Y(cur.y)})`);
+  $("#meRot").setAttribute("transform",`rotate(${ang})`);
+  document.querySelectorAll("#steplist li").forEach(li=>li.classList.toggle("on", +li.dataset.i===i));
+  const on=$("#steplist li.on"); if(on) on.scrollIntoView({block:"nearest",behavior:"smooth"});
+  let html;
+  if(i<0) html=`<div class="stepnum">준비 <small>Ready</small></div><p style="margin-top:10px">${seq.ready}</p>`;
+  else if(i>=n) html=`<div class="stepnum">끝 <small>End · ${n} movements</small></div><p style="margin-top:10px">${seq.end} Patterns begin and end on the same spot.</p>`;
+  else { const s=seq.steps[i]; html=`<div class="stepnum">${i+1}<small> / ${n}</small></div>
+    <h3 style="font-size:20px;font-family:var(--serif);margin-top:10px">${s.t}</h3>
+    <div class="row" style="margin-top:8px"><span class="pill gold">${s.s}</span><span class="pill">${s.m}</span><span class="pill red">Facing ${s.f}</span></div>`; }
+  $("#stepnow").innerHTML=html;
+}
+const KCOUNT=["hana","dul","set","net","daseot","yeoseot","ilgop","yeodeol","ahop","yeol"];
+function go(d){ const n=DATA.sequences[P.id].steps.length; P.i=Math.max(-1,Math.min(n,P.i+d)); paint(); if(d>0&&P.i>=0&&P.i<n&&$("#voice")?.checked) speak(KCOUNT[P.i%10]); if(P.i>=n){stopPlay(); logPractice();} }
+function togglePlay(){ if(P.timer) return stopPlay(); const n=DATA.sequences[P.id].steps.length; if(P.i>=n) P.i=-1; $("#playb").textContent="❚❚ Pause"; const tick=()=>{ go(1); if(P.timer) P.timer=setTimeout(tick,P.speed*1000); }; P.timer=setTimeout(tick,250); }
+function stopPlay(){ clearTimeout(P.timer); P.timer=null; const b=$("#playb"); if(b) b.textContent="▶ Play"; }
+function rep(id,d){ state.reps[id]=Math.max(0,(state.reps[id]||0)+d); if(d>0) logPractice(); save(); $("#repn").textContent=state.reps[id]; }
+function toggleLearned(id){ state.learned[id]=!state.learned[id]; save(); route(); }
+
+V.glossary = () => {
+  const cats=["All",...new Set(DATA.glossary.map(g=>g[3]))];
+  const cat=store.get("gcat","All");
+  return `<div class="kicker">Terminology · 용어</div><h1>Terms</h1>
+  <p class="lead">${DATA.glossary.length} terms, with the ITF spelling from Gen. Choi's volume indexes next to the common Kukkiwon spelling. Tap ▸ to hear the Korean (if your device has a Korean voice); tick a term once you know it.</p>
+  <div style="margin-top:16px"><input id="gq" placeholder="Search English or Korean…  e.g. 'knife', 'chagi'" oninput="drawGloss()"></div>
+  <div class="chips">${cats.map(c=>`<button class="chip ${c===cat?"on":""}" onclick="store.set('gcat','${c}');route()">${c}</button>`).join("")}</div>
+  <div style="overflow:auto"><table class="gl"><thead><tr><th>English</th><th>ITF (Choi)</th><th>Kukkiwon</th><th></th><th>Known</th></tr></thead><tbody id="gbody"></tbody></table></div>
+  <div class="note">${DATA.glossaryNote}</div>`;
+};
+function drawGloss(){
+  const q=($("#gq")?.value||"").toLowerCase(); const cat=store.get("gcat","All");
+  const rows=DATA.glossary.filter(g=>(cat==="All"||g[3]===cat)&&(!q||g.slice(0,3).join(" ").toLowerCase().includes(q)));
+  $("#gbody").innerHTML = rows.map(g=>{const k=g[0]; return `<tr><td>${esc(g[0])}<div class="dim small">${g[3]}</div></td><td class="ko">${esc(g[1])}</td><td class="muted">${esc(g[2]||"—")}</td>
+   <td><button class="say" title="Speak" onclick="speak('${esc(g[1]).replace(/'/g,"")}')">▸</button></td>
+   <td><button class="tick ${state.terms[k]?"on":""}" onclick="state.terms['${k.replace(/'/g,"")}']=!state.terms['${k.replace(/'/g,"")}'];save();drawGloss()">${state.terms[k]?"✓":""}</button></td></tr>`}).join("") || `<tr><td colspan="5" class="muted">No match.</td></tr>`;
+}
+
+/* stance footprint diagrams: [x,y,rot] for left & right foot, units = shoulder widths */
+const FEET = {
+  "Walking stance":[[-0.5,0.75,0],[0.5,-0.75,25]],
+  "L-stance":[[0,0.9,-15],[-0.55,-0.6,-75]],
+  "Sitting stance":[[-0.75,0,0],[0.75,0,0]],
+  "Fixed stance":[[0,0.9,-15],[-0.55,-0.6,-75]],
+  "Rear foot stance":[[0.15,0.55,-25],[-0.2,-0.45,-15]],
+  "Close stance":[[-0.12,0,0],[0.12,0,0]],
+  "Parallel stance":[[-0.5,0,0],[0.5,0,0]],
+  "X-stance":[[0.1,0.1,-15],[-0.15,-0.05,20]],
+  "Attention stance":[[-0.14,0,-22],[0.14,0,22]],
+  "Bending stance":[[0,0,0],null]
+};
+function footSVG(name){
+  const f=FEET[name]; if(!f) return "";
+  const foot=(x,y,r,mirror,fill)=>`<g transform="translate(${100+x*55},${100-y*55}) rotate(${r}) scale(${mirror?-1:1},1)"><path d="M0,-22 C9,-22 11,-10 10,0 C9,12 7,22 0,22 C-7,22 -8,12 -8,2 C-9,-10 -8,-22 0,-22Z" fill="${fill}"/><circle cx="0" cy="-17" r="3" fill="#121214" opacity=".25"/></g>`;
+  return `<svg class="stsvg" viewBox="0 0 200 200" width="100%" height="150">
+    <line x1="100" y1="20" x2="100" y2="180" stroke="#25252b"/><line x1="20" y1="100" x2="180" y2="100" stroke="#25252b"/>
+    <text x="100" y="14" fill="#77726a" font-size="10" text-anchor="middle" font-family="Inter">front</text>
+    ${foot(f[0][0],f[0][1],f[0][2],true,"#d9b25a")}${f[1]?foot(f[1][0],f[1][1],f[1][2],false,"#f2ece0"):`<text x="128" y="96" fill="#77726a" font-size="10" font-family="Inter">R foot raised</text>`}
+    <text x="12" y="192" fill="#d9b25a" font-size="10" font-family="Inter">L</text><text x="26" y="192" fill="#f2ece0" font-size="10" font-family="Inter">R</text>
+  </svg>`;
+}
+V.techniques = () => `<div class="kicker">Fundamentals · 기본</div><h1>Technique</h1>
+  <p class="lead">Stances, the science behind power, and the tenets — the parts of the Encyclopedia every later technique relies on.</p>
+  <h2>Stances · Sogi</h2>
+  <div class="grid g3">${DATA.stances.map(s=>`<div class="card">${footSVG(s.en)}<h3>${s.en}</h3><div class="muted small">${s.ko}${s.kk?` · <span class="dim">KKW: ${s.kk}</span>`:""}</div><p class="small" style="margin-top:8px">${s.spec}</p><div class="src">${s.src}</div></div>`).join("")}</div>
+  <p class="dim small" style="margin-top:8px">Footprints are schematic; proportions follow the shoulder-width measures in the text.</p>
+  <h2>Theory of power · Him ui wolli</h2>
+  <div class="grid g3">${DATA.theory.map(t=>`<div class="card"><h3>${t.en}</h3><div class="muted small">${t.ko}</div><p class="small" style="margin-top:8px">${t.gist}</p></div>`).join("")}</div>
+  <div class="src">${DATA.theorySrc}</div>
+  <h2>Tenets · Jungshin</h2>
+  <div class="grid g3">${DATA.tenets.map(t=>`<div class="card"><span class="hg" style="font-size:24px">${t.hg}</span><h3 style="margin-top:6px">${t.en} <span class="muted small">· ${t.ko}</span></h3><p class="small" style="margin-top:6px">${t.gist}</p><div class="src">${t.src}</div></div>`).join("")}</div>
+  <div class="note">The 1965 book lists the tenets differently (it includes “modesty”), which the full app can show as a history layer.</div>
+  <p class="small muted" style="margin-top:10px">Full explanations of the tenets, the Charter and the training secrets are in <a href="#philosophy">Philosophy</a>.</p>`;
+
+
+V.philosophy = () => `<div class="kicker">Philosophy · 정신</div><h1>Philosophy</h1>
+  <p class="lead">Gen. Choi wrote that whether training succeeds or fails depends largely on the tenets. This section sets out the Charter, his ideals and the principles behind every technique, in his words paraphrased from Vol. I.</p>
+  <h2>Charter of Taekwon-Do · Hun Jang</h2>
+  <div class="grid g2">${DATA.charter.parts.map(([t,x])=>`<div class="card"><span class="pill ${t==="Preamble"||t==="Conclusion"?"gold":""}">${t}</span><p class="small" style="margin-top:8px">${x}</p></div>`).join("")}</div>
+  <div class="src">${DATA.charter.src}</div>
+  <h2>The tenets, explained</h2>
+  <div class="grid">${DATA.tenetDetail.items.map(([t,x],i)=>`<div class="card row" style="flex-wrap:nowrap;align-items:flex-start;gap:16px"><span class="hg" style="font-size:24px;min-width:90px">${DATA.tenets[i].hg}</span><div><h3>${t} <span class="muted small">· ${DATA.tenets[i].ko}</span></h3><p class="small" style="margin-top:4px">${x}</p></div></div>`).join("")}</div>
+  <div class="src">${DATA.tenetDetail.src}</div>
+  <h2>Three ideals (1959)</h2>
+  <div class="card"><p class="muted">${DATA.ideals.intro}</p><ol style="margin:10px 0 0 20px">${DATA.ideals.items.map(x=>`<li style="margin:5px 0">${x}</li>`).join("")}</ol><div class="src">${DATA.ideals.src}</div></div>
+  <h2>The spiritual dimension</h2>
+  <div class="card"><p>${DATA.spiritual.text}</p><div class="src">${DATA.spiritual.src}</div></div>
+  <h2>Twelve technical principles</h2>
+  <div class="card"><p class="muted">${DATA.principles.intro}</p><ol class="cols2" style="margin:10px 0 0 20px">${DATA.principles.items.map(x=>`<li style="margin:5px 0;break-inside:avoid">${x}</li>`).join("")}</ol><div class="src">${DATA.principles.src}</div></div>
+  <h2>Training secrets</h2>
+  <div class="card"><p class="muted">${DATA.secrets.intro}</p><ol style="margin:10px 0 0 20px">${DATA.secrets.items.map(x=>`<li style="margin:4px 0">${x}</li>`).join("")}</ol><div class="src">${DATA.secrets.src}</div></div>`;
+
+V.path = () => `<div class="kicker">Curriculum · 띠</div><h1>Belt path</h1>
+  <p class="lead">Choose your current rank. The app sets your daily focus and grading checklist from it. Colours and order follow ENC Vol. II and Vol. VIII; check them against your own school's syllabus.</p>
+  <div class="path" style="margin-top:20px">${DATA.belts.map((b,i)=>{ const t=b.tul?tulById(b.tul):null; return `
+    <div class="step ${i===state.belt?"me":""}">
+      <div class="belt" style="background:${b.c[0]}">${b.c[1]?`<i style="background:${b.c[1]}"></i>`:""}</div>
+      <div><b>${b.rank}</b> <span class="muted">· ${b.color}</span><div class="small muted">${t?`Pattern: <a href="#pattern-${t.id}">${t.name}</a> (${t.moves})`:"Fundamentals, stances, counting, commands"}${t&&state.learned[t.id]?' <span style="color:#9fd8ad">✓</span>':""}</div></div>
+      <button class="btn sm ${i===state.belt?"pri":""}" onclick="state.belt=${i};save();route()">${i===state.belt?"My rank":"Set"}</button>
+    </div>`}).join("")}</div>
+  <h2>Meaning of the belt colours</h2>
+  <div class="grid g3">${DATA.beltMeaning.map(([c,m])=>`<div class="card"><h3>${c}</h3><p class="small muted" style="margin-top:4px">${m}</p></div>`).join("")}</div>
+  <div class="src">ENC Vol. II, Practice Suit — Meaning of Belt Colors</div>
+  <h2>The rank system</h2>
+  <div class="grid g2">${DATA.rankSystem.points.map(([t,x])=>`<div class="card"><h3>${t}</h3><p class="small muted" style="margin-top:4px">${x}</p></div>`).join("")}</div>
+  <div class="src">${DATA.rankSystem.src}</div>`;
+
+/* training */
+let T={on:false,phase:"idle",round:0,left:0,iv:null,cfg:store.get("tcfg",{rounds:5,work:90,rest:30,call:4,pool:"Kicks"})};
+V.train = () => `<div class="kicker">Training · 수련</div><h1>Train</h1>
+  <p class="lead">A round timer that calls out techniques in Korean during work rounds, plus practice sessions built from your rank.</p>
+  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr));margin-top:18px">
+    <div class="card timer">
+      <div class="tphase ${T.phase}" id="tph">${T.phase==="idle"?"Ready":T.phase}</div>
+      <div class="tdisp" id="tdisp">${fmt(T.left||T.cfg.work)}</div>
+      <div class="muted" id="tround">Round ${T.round||1} of ${T.cfg.rounds}</div>
+      <div class="callout" id="tcall"></div>
+      <div class="row" style="justify-content:center;margin-top:18px"><button class="btn pri" id="tgo" onclick="tToggle()">${T.on?"Pause":"Start"}</button><button class="btn" onclick="tReset()">Reset</button></div>
+    </div>
+    <div class="card">
+      <h3>Timer settings</h3>
+      <div class="fields" style="margin-top:12px">
+        <label>Rounds<input type="number" min="1" max="30" value="${T.cfg.rounds}" onchange="tset('rounds',this.value)"></label>
+        <label>Work (sec)<input type="number" min="10" max="600" value="${T.cfg.work}" onchange="tset('work',this.value)"></label>
+        <label>Rest (sec)<input type="number" min="0" max="300" value="${T.cfg.rest}" onchange="tset('rest',this.value)"></label>
+        <label>Call every (sec)<input type="number" min="0" max="30" value="${T.cfg.call}" onchange="tset('call',this.value)"></label>
+        <label>Call-outs<select onchange="tset('pool',this.value)">${["Kicks","Blocks","Attacks","Stances","Off"].map(p=>`<option ${p===T.cfg.pool?"selected":""}>${p}</option>`).join("")}</select></label>
+      </div>
+      <p class="small dim" style="margin-top:10px">Set “Call every” to 0 for a plain round timer. Voice needs a Korean speech voice on your device.</p>
+    </div>
+  </div>
+  <h2>Today's session · ${DATA.belts[state.belt].rank}</h2>
+  ${session()}`;
+function session(){
+  const b=DATA.belts[state.belt]; const t=b.tul?tulById(b.tul):tulById("chon-ji");
+  const prev=DATA.belts.slice(1,state.belt).map(x=>tulById(x.tul)).filter(Boolean);
+  const blocks=[
+    ["Warm-up & calisthenics","8 min","Joint rotation, then the stretches in ENC Vol. II “Calisthenics (Dosoo Dallyon)”."],
+    ["Stances","5 min","Hold each stance for 30 sec per side: walking, L-stance, sitting, rear foot. Check against the footprint diagrams."],
+    ["Fundamental exercise","10 min","Four-direction punch & block (Saju Jirugi / Saju Makgi), 3× each side."],
+    [`Pattern: ${t.name}`,"12 min",`5 slow reps for accuracy, 3 at full speed with the step player, then 2 from memory. Log reps.`],
+    ...(prev.length?[["Review earlier patterns","6 min",prev.map(p=>p.name).join(" · ")]]:[]),
+    ["Kicks","8 min","Front snap kick, side piercing kick, turning kick — 10 per leg, from L-stance."],
+    ["Terminology","3 min","One flashcard round in Quiz."],
+    ["Cool-down","4 min","Breath control and static stretching."]
+  ];
+  return `<div class="grid">${blocks.map((x,i)=>`<div class="card row" style="justify-content:space-between;flex-wrap:nowrap"><div class="row" style="flex-wrap:nowrap;gap:14px"><div class="stepnum" style="font-size:24px;min-width:26px">${i+1}</div><div><h3>${x[0]}</h3><div class="muted small">${x[2]}</div></div></div><span class="pill">${x[1]}</span></div>`).join("")}</div>
+  <div class="row" style="margin-top:12px"><button class="btn pri" onclick="logPractice();this.textContent='✓ Logged today';">Log session complete</button><span class="dim small">Sessions count toward your streak.</span></div>`;
+}
+const fmt=s=>`${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`;
+function tset(k,v){ T.cfg[k]=k==="pool"?v:Math.max(0,+v||0); store.set("tcfg",T.cfg); if(!T.on){T.left=T.cfg.work; tdraw();} }
+function tdraw(){ if(!$("#tdisp")) return; $("#tdisp").textContent=fmt(T.left); $("#tph").textContent=T.phase==="idle"?"Ready":T.phase; $("#tph").className="tphase "+T.phase; $("#tround").textContent=`Round ${Math.max(1,T.round)} of ${T.cfg.rounds}`; $("#tgo").textContent=T.on?"Pause":"Start"; }
+function beep(f=880,d=.18){ try{ const a=T.ac||(T.ac=new (window.AudioContext||window.webkitAudioContext)()); const o=a.createOscillator(),g=a.createGain(); o.frequency.value=f; o.connect(g); g.connect(a.destination); g.gain.setValueAtTime(.2,a.currentTime); g.gain.exponentialRampToValueAtTime(.001,a.currentTime+d); o.start(); o.stop(a.currentTime+d);}catch(e){} }
+function tToggle(){
+  if(T.on){ T.on=false; clearInterval(T.iv); tdraw(); return; }
+  if(T.phase==="idle"){ T.phase="work"; T.round=1; T.left=T.cfg.work; beep(1100,.3); }
+  T.on=true; let since=0;
+  T.iv=setInterval(()=>{
+    T.left--; since++;
+    if(T.phase==="work" && T.cfg.call>0 && T.cfg.pool!=="Off" && since>=T.cfg.call){ since=0; callout(); }
+    if(T.left<=3&&T.left>0) beep(660,.08);
+    if(T.left<=0){
+      if(T.phase==="work"){ if(T.round>=T.cfg.rounds){ clearInterval(T.iv); T.on=false; T.phase="idle"; T.left=T.cfg.work; T.round=0; beep(520,.6); logPractice(); $("#tcall").innerHTML="Done · 수고했습니다"; tdraw(); return; }
+        T.phase=T.cfg.rest>0?"rest":"work"; T.left=T.cfg.rest||T.cfg.work; if(T.phase==="work")T.round++; beep(520,.4); $("#tcall").innerHTML=""; }
+      else { T.phase="work"; T.round++; T.left=T.cfg.work; beep(1100,.3); }
+    }
+    tdraw();
+  },1000);
+  tdraw();
+}
+function tReset(){ clearInterval(T.iv); T={...T,on:false,phase:"idle",round:0,left:T.cfg.work}; tdraw(); if($("#tcall")) $("#tcall").innerHTML=""; }
+function callout(){ const pool=DATA.glossary.filter(g=>g[3]===T.cfg.pool && !["Kick","Block","Punch","Strike","Thrust","Stance"].includes(g[0])); const g=pool[Math.floor(Math.random()*pool.length)]; $("#tcall").innerHTML=`${esc(g[1])}<small>${esc(g[0])}</small>`; speak(g[1]); }
+
+/* quiz */
+let Q={mode:store.get("qmode","mc"),deck:store.get("qdeck","All"),cur:null,score:0,n:0,flip:false};
+function qPool(){
+  const g=DATA.glossary.filter(x=>Q.deck==="All"||x[3]===Q.deck).map(x=>({q:x[0],a:x[1],kind:"term",sub:x[3]}));
+  if(Q.deck==="All"||Q.deck==="Patterns") DATA.itfTul.forEach(t=>{ g.push({q:`How many movements in ${t.name}?`,a:String(t.moves),kind:"moves"}); g.push({q:t.meaning.replace(new RegExp(t.name.replace("-","-?"),"gi"),"___").slice(0,170)+"…",a:t.name,kind:"meaning"}); });
+  return g;
+}
+function qNext(){ const p=qPool(); const c=p[Math.floor(Math.random()*p.length)]; const same=p.filter(x=>x.kind===c.kind&&x.a!==c.a); const opts=[c.a]; while(opts.length<4&&same.length){ const o=same.splice(Math.floor(Math.random()*same.length),1)[0].a; if(!opts.includes(o)) opts.push(o);} Q.cur={...c,opts:opts.sort(()=>Math.random()-.5)}; Q.flip=false; }
+V.quiz = () => { if(!Q.cur) qNext(); const decks=["All","Patterns","Counting","Commands","Stances","Blocks","Attacks","Kicks","Tools","Training"];
+  const c=Q.cur;
+  return `<div class="kicker">Self-test · 시험</div><h1>Quiz</h1>
+  <p class="lead">Flashcards and multiple choice drawn from the glossary and the 24 patterns: names, movement counts, meanings.</p>
+  <div class="tabs">${[["mc","Multiple choice"],["fc","Flashcards"]].map(([k,l])=>`<button class="tab ${Q.mode===k?"on":""}" onclick="Q.mode='${k}';store.set('qmode','${k}');route()">${l}</button>`).join("")}</div>
+  <div class="chips">${decks.map(d=>`<button class="chip ${Q.deck===d?"on":""}" onclick="Q.deck='${d}';store.set('qdeck','${d}');qNext();route()">${d}</button>`).join("")}</div>
+  ${Q.mode==="mc"?`
+    <div class="muted small">Score ${Q.score} / ${Q.n}</div>
+    <div class="card" style="max-width:560px;margin-top:10px"><div class="dim small">${c.kind==="term"?"What is the ITF Korean term for…":c.kind==="moves"?"Pattern facts":"Which pattern is this?"}</div><div style="font-family:var(--serif);font-size:${c.kind==="meaning"?17:24}px;font-weight:700;margin-top:6px">${esc(c.q)}</div></div>
+    <div class="opts" id="opts">${c.opts.map(o=>`<button class="opt" onclick="qAns(this,'${esc(o).replace(/'/g,"\\'")}')">${esc(o)}</button>`).join("")}</div>
+    <button class="btn" style="margin-top:12px" onclick="qNext();route()">Skip →</button>`
+  :`<div class="flash ${Q.flip?"flip":""}" onclick="this.classList.toggle('flip')"><div class="in">
+      <div class="face"><div class="dim small">${c.kind==="term"?c.sub:"Pattern"}</div><div class="big" style="font-size:${c.kind==="meaning"?17:32}px">${esc(c.q)}</div><div class="dim small" style="margin-top:14px">tap to flip</div></div>
+      <div class="face back"><div class="big">${esc(c.a)}</div>${c.kind==="term"?`<button class="btn sm" style="margin-top:14px" onclick="event.stopPropagation();speak('${esc(c.a).replace(/'/g,"")}')">▸ Hear it</button>`:""}</div></div></div>
+    <div class="row" style="margin-top:14px"><button class="btn" onclick="qNext();route()">Again later</button><button class="btn pri" onclick="${c.kind==="term"?`state.terms['${c.q.replace(/'/g,"")}']=true;save();`:""}qNext();route()">Got it →</button></div>`}`;
+};
+function qAns(el,a){ if(el.parentNode.dataset.done) return; el.parentNode.dataset.done=1; Q.n++; const ok=a===Q.cur.a; if(ok){Q.score++; if(Q.cur.kind==="term"){state.terms[Q.cur.q]=true;save();}} [...el.parentNode.children].forEach(b=>{ if(b.textContent===Q.cur.a) b.classList.add("ok"); }); if(!ok) el.classList.add("no"); setTimeout(()=>{qNext();route();},ok?700:1500); }
+
+V.rules = () => `<div class="kicker">Competition · 경기</div><h1>Rules</h1>
+  <p class="lead">Current sport rules by lineage, with an effective date and source on each. Rules change most years, so this section is updated from the federations' own documents.</p>
+  <div class="tabs"><button class="tab on">WT Kyorugi 2026</button><button class="tab" onclick="document.getElementById('itfr').scrollIntoView({behavior:'smooth'})">ITF</button></div>
+  <div class="card"><span class="pill red">In force · June 2026</span><h2 style="margin-top:10px">${DATA.wt2026.title}</h2><p class="muted">${DATA.wt2026.effective}</p>
+  <dl class="wt">${DATA.wt2026.items.map(([t,d])=>`<dt>${t}</dt><dd>${d}</dd>`).join("")}</dl><div class="src">${DATA.wt2026.src}</div></div>
+  <div class="card" style="margin-top:14px"><h3>Scoring quick reference</h3><p class="small muted" style="margin-top:6px">The full point table (punch, body kicks, head kicks, turning bonuses) needs to be filled in from the WT Competition Rules & Interpretation in force from June 1, 2026. The supplied summary confirms one value: spinning head kicks are now 6 points.</p></div>
+  <h2 id="itfr">ITF tournament rules</h2>
+  <div class="note">The ITF federations publish their own tournament rules (patterns, sparring, power test, special technique). Because the three federations differ, the app shows the rules of the federation each user picks. Content is pending partnership.</div>
+  <div class="card" style="margin-top:12px"><span class="pill">Historical</span><h3 style="margin-top:10px">Competition in the Encyclopedia</h3><p class="small" style="margin-top:6px">${DATA.itfRulesHistoric.text}</p><div class="src">${DATA.itfRulesHistoric.src}</div></div>`;
+
+V.about = () => `<div class="kicker">History & sources · 역사</div><h1>History</h1>
+  <p class="lead">A short timeline, the books this content comes from, and how each source may be used.</p>
+  <h2>Timeline</h2><div class="timeline">${DATA.history.map(([y,t,s])=>`<div><b>${y}</b>${t}<div class="dim small">${s}</div></div>`).join("")}</div><div class="note">${DATA.historyNote}</div>
+  <h2>Sources</h2>
+  <div class="grid g2">${DATA.sources.map(s=>`<div class="card"><div class="row" style="justify-content:space-between"><span class="pill gold">${s.k}</span><span class="pill">${s.status}</span></div><h3 style="margin-top:10px">${s.t}</h3><p class="small muted" style="margin-top:4px">${s.role}</p></div>`).join("")}</div>
+  <div class="note">Gen. Choi's Encyclopedia and the 1965 book are copyrighted. This prototype only uses facts from them (names, counts, sequences, measures) in its own wording and illustrations, citing volume and page. Reproducing their text or plates would need a license.</div>`;
+
+/* router */
+function route(){
+  const h=(location.hash||"#home").slice(1);
+  let html, nav=h;
+  if(h.startsWith("pattern-")){ html=V.pattern(h.slice(8)); nav="patterns"; }
+  else html=(V[h]||V.home)();
+  if(!V[h]&&!h.startsWith("pattern-")) nav="home";
+  if(h!=="train" && T.on){ /* keep timer running */ }
+  renderNav(nav);
+  $("#main").innerHTML=html;
+  if(h.startsWith("pattern-")) paint();
+  if(h==="glossary") drawGloss();
+  if(h==="train") { if(!T.left) T.left=T.cfg.work; tdraw(); }
+}
+window.addEventListener("hashchange",()=>{ stopPlay(); route(); window.scrollTo(0,0); });
+document.addEventListener("keydown",e=>{ if(!location.hash.startsWith("#pattern-")||!DATA.sequences[P.id]) return; if(e.key==="ArrowRight") go(1); if(e.key==="ArrowLeft") go(-1); if(e.key===" "&&e.target===document.body){e.preventDefault();togglePlay();} });
+route();
+</script>
+</body>
+</html>

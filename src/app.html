@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dojang — For all that you may become</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#121214; --ink2:#1b1b1f; --ink3:#25252b; --line:#33333b;
+  --paper:#f2ece0; --muted:#a59f93; --dim:#77726a;
+  --seal:#c23b2e; --seal2:#e0574a; --gold:#d9b25a; --blue:#4c7fd1; --green:#4f9e62;
+  --r:14px; --serif:"Noto Serif KR",Georgia,serif; --sans:Inter,system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--ink);color:var(--paper);font-family:var(--sans);font-size:15px;line-height:1.5}
+body{min-height:100vh;display:flex}
+a{color:inherit}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+input,select{font:inherit;color:var(--paper);background:var(--ink2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%}
+input:focus,select:focus,button:focus-visible{outline:2px solid var(--seal2);outline-offset:2px}
+
+/* nav */
+nav.side{width:232px;flex:none;border-right:1px solid var(--line);padding:22px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:2px;background:var(--ink)}
+.brand{display:flex;align-items:center;gap:10px;padding:0 8px 18px}
+.seal{width:36px;height:36px;border-radius:8px;background:var(--seal);display:grid;place-items:center;font-family:var(--serif);font-weight:900;font-size:18px;color:#fff;box-shadow:inset 0 0 0 2px rgba(255,255,255,.15)}
+.brand b{font-family:var(--serif);font-size:18px;letter-spacing:.02em}
+.brand small{display:block;color:var(--dim);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.nav-a{display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:10px;color:var(--muted);text-decoration:none;font-weight:500}
+.nav-a:hover{background:var(--ink2);color:var(--paper)}
+.nav-a.on{background:var(--ink3);color:var(--paper)}
+.navsec{margin:16px 10px 6px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);font-weight:700;display:flex;gap:8px;align-items:center}
+.nav-a .ic{width:20px;text-align:center;font-family:var(--serif);font-weight:700;color:var(--seal2)}
+.side .foot{margin-top:auto;color:var(--dim);font-size:11.5px;padding:8px 10px;line-height:1.45}
+main{flex:1;min-width:0;padding:34px clamp(18px,4vw,56px) 110px;max-width:1180px}
+nav.bottom{display:none}
+@media (max-width:860px){
+  nav.side{display:none}
+  nav.bottom{display:flex;position:fixed;bottom:0;left:0;right:0;background:rgba(18,18,20,.96);backdrop-filter:blur(8px);border-top:1px solid var(--line);z-index:20;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+  nav.bottom a{display:flex;flex-direction:column;align-items:center;font-size:10.5px;color:var(--muted);text-decoration:none;padding:4px 6px;gap:1px}
+  nav.bottom a .ic{font-family:var(--serif);font-weight:700;font-size:17px;color:var(--dim)}
+  nav.bottom a.on{color:var(--paper)} nav.bottom a.on .ic{color:var(--seal2)}
+  main{padding-top:22px}
+}
+
+/* type & blocks */
+h1{font-family:var(--serif);font-size:clamp(26px,3.4vw,38px);line-height:1.15;font-weight:900;letter-spacing:-.01em}
+h2{font-family:var(--serif);font-size:21px;font-weight:700;margin:30px 0 12px}
+h3{font-size:15px;font-weight:600}
+.kicker{color:var(--seal2);font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+.lead{color:var(--muted);max-width:66ch;margin-top:10px}
+.hg{font-family:var(--serif);color:var(--gold)}
+.muted{color:var(--muted)} .dim{color:var(--dim)} .small{font-size:12.5px}
+.src{font-size:11.5px;color:var(--dim);margin-top:8px}
+.src::before{content:"Source · ";color:var(--muted)}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+.g3{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+.g4{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}
+.card{background:var(--ink2);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.card.click{cursor:pointer;transition:border-color .15s,transform .15s}
+.card.click:hover{border-color:#4a4a54;transform:translateY(-1px)}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:999px;background:var(--ink3);color:var(--muted);border:1px solid var(--line)}
+.pill.red{background:rgba(194,59,46,.15);border-color:rgba(194,59,46,.4);color:#f0a59c}
+.pill.gold{background:rgba(217,178,90,.12);border-color:rgba(217,178,90,.35);color:var(--gold)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.btn{text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border-radius:10px;background:var(--ink3);border:1px solid var(--line);font-weight:600;font-size:14px}
+.btn:hover{border-color:#55555f}
+.btn.pri{background:var(--seal);border-color:var(--seal);color:#fff}
+.btn.pri:hover{background:var(--seal2)}
+.btn.sm{padding:6px 11px;font-size:13px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0}
+.chip{padding:6px 12px;border-radius:999px;border:1px solid var(--line);color:var(--muted);font-size:13px;font-weight:500}
+.chip.on{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:18px 0}
+.tab{padding:10px 14px;color:var(--muted);font-weight:600;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tab.on{color:var(--paper);border-color:var(--seal2)}
+.note{border-left:3px solid var(--gold);background:rgba(217,178,90,.07);padding:12px 14px;border-radius:0 10px 10px 0;color:#dcd3c0;font-size:13.5px;margin:14px 0}
+.hidden{display:none!important}
+.cols2{columns:2;column-gap:32px}@media (max-width:700px){.cols2{columns:1}}
+
+/* home */
+.hero{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;align-items:stretch}
+@media (max-width:860px){.hero{grid-template-columns:1fr}}
+.hero .card.big{padding:26px;background:linear-gradient(140deg,#1d1c20 0%,#16161a 60%),var(--ink2);position:relative;overflow:hidden}
+.hero .card.big::after{content:"道";position:absolute;right:-10px;bottom:-60px;font-family:var(--serif);font-size:240px;font-weight:900;color:rgba(194,59,46,.08);line-height:1}
+.stat{font-family:var(--serif);font-size:30px;font-weight:900}
+.bar{height:6px;background:var(--ink3);border-radius:9px;overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--seal),var(--gold));border-radius:9px;transition:width .4s}
+.beltchip{display:inline-block;width:46px;height:12px;border-radius:3px;border:1px solid rgba(255,255,255,.18);vertical-align:middle;position:relative;overflow:hidden}
+.beltchip i{position:absolute;top:0;bottom:0;right:7px;width:7px}
+
+/* pattern detail */
+.pd{display:grid;grid-template-columns:minmax(280px,1fr) 1.15fr;gap:18px;align-items:start}
+@media (max-width:980px){.pd{grid-template-columns:1fr}}
+.floor{background:#0e0e10;border:1px solid var(--line);border-radius:var(--r);position:relative;aspect-ratio:1/1;overflow:hidden}
+.floor svg{width:100%;height:100%;display:block}
+.stepnow{padding:18px;border-radius:var(--r);background:var(--ink2);border:1px solid var(--line);margin-top:12px}
+.stepnum{font-family:var(--serif);font-size:44px;font-weight:900;line-height:1;color:var(--seal2)}
+.stepnum small{font-size:15px;color:var(--dim);font-weight:500}
+.steplist{max-height:520px;overflow:auto;border:1px solid var(--line);border-radius:var(--r)}
+.steplist li{list-style:none;display:grid;grid-template-columns:38px 1fr;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);cursor:pointer;font-size:13.5px}
+.steplist li:last-child{border:0}
+.steplist li.on{background:rgba(194,59,46,.12)}
+.steplist li b{font-family:var(--serif);color:var(--muted)}
+.steplist li.on b{color:var(--seal2)}
+.ctrl{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center}
+.ctrl input[type=range]{width:120px;padding:0;accent-color:var(--seal)}
+.counter{display:flex;align-items:center;gap:10px}
+.counter .n{font-family:var(--serif);font-size:24px;font-weight:900;min-width:34px;text-align:center}
+
+/* glossary */
+table.gl{width:100%;border-collapse:collapse;font-size:14px}
+table.gl th{text-align:left;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);font-weight:600;padding:8px 10px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--ink)}
+table.gl td{padding:10px;border-bottom:1px solid #26262c;vertical-align:top}
+table.gl td.ko{font-weight:600}
+table.gl tr:hover td{background:#17171b}
+.say{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);color:var(--muted);font-size:13px}
+.say:hover{color:var(--paper);border-color:#55555f}
+
+/* stance svg */
+.stsvg{background:#0e0e10;border-radius:10px;border:1px solid var(--line);margin-bottom:12px}
+
+/* timer */
+.timer{text-align:center;padding:30px 18px}
+.tdisp{font-family:var(--serif);font-size:clamp(64px,12vw,120px);font-weight:900;line-height:1;font-variant-numeric:tabular-nums}
+.tphase{font-size:13px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;margin-bottom:10px}
+.tphase.work{color:var(--seal2)} .tphase.rest{color:var(--green)} .tphase.idle{color:var(--dim)}
+.callout{font-family:var(--serif);font-size:clamp(26px,4vw,40px);font-weight:900;min-height:1.4em;margin-top:14px}
+.callout small{display:block;font-family:var(--sans);font-size:14px;color:var(--muted);font-weight:500}
+.fields{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.fields label{font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:5px}
+
+/* quiz */
+.flash{perspective:1200px;height:260px;cursor:pointer;max-width:560px}
+.flash .in{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.flash.flip .in{transform:rotateY(180deg)}
+.flash .face{position:absolute;inset:0;backface-visibility:hidden;border-radius:18px;border:1px solid var(--line);background:var(--ink2);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center}
+.flash .back{transform:rotateY(180deg);background:#1f1a1a;border-color:rgba(194,59,46,.4)}
+.flash .big{font-family:var(--serif);font-size:32px;font-weight:900}
+.opts{display:grid;gap:8px;margin-top:14px;max-width:560px}
+.opt{text-align:left;padding:13px 15px;border-radius:12px;border:1px solid var(--line);background:var(--ink2);font-weight:500}
+.opt:hover{border-color:#55555f}
+.opt.ok{border-color:var(--green);background:rgba(79,158,98,.15)}
+.opt.no{border-color:var(--seal);background:rgba(194,59,46,.15)}
+
+/* belt path */
+.path{display:flex;flex-direction:column;gap:0;position:relative}
+.step{display:grid;grid-template-columns:70px 1fr auto;gap:14px;align-items:center;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:var(--ink2);margin-bottom:8px}
+.step.me{border-color:var(--seal);box-shadow:0 0 0 1px var(--seal) inset}
+.step .belt{height:16px;border-radius:4px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.2)}
+.step .belt i{position:absolute;top:0;bottom:0;right:10px;width:10px}
+.tick{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--line);display:grid;place-items:center;font-size:13px}
+.tick.on{background:var(--green);border-color:var(--green);color:#fff}
+dl.wt dt{font-weight:700;margin-top:14px} dl.wt dd{color:#d6cfc2;margin-top:3px}
+.timeline{border-left:2px solid var(--line);margin-left:6px}
+.timeline>div{padding:0 0 16px 18px;position:relative}
+.timeline>div::before{content:"";position:absolute;left:-7px;top:5px;width:12px;height:12px;border-radius:50%;background:var(--seal);box-shadow:0 0 0 3px var(--ink)}
+.timeline b{font-family:var(--serif);color:var(--gold);margin-right:8px}
+</style>
+</head>
+<body>
+<nav class="side" id="side"></nav>
+<main id="main"></main>
+<nav class="bottom" id="bottom"></nav>
+<script>
+/*__DATA__*/
+</script>
+<script>
+const $ = (s,el=document)=>el.querySelector(s);
+const esc = s => String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const store = {
+  get(k,d){try{const v=localStorage.getItem("dj_"+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+  set(k,v){try{localStorage.setItem("dj_"+k,JSON.stringify(v))}catch(e){}}
+};
+const state = { belt: store.get("belt",1), learned: store.get("learned",{}), reps: store.get("reps",{}), terms: store.get("terms",{}), streak: store.get("streak",{days:[]}) };
+function save(){ ["belt","learned","reps","terms","streak"].forEach(k=>store.set(k,state[k])); }
+function logPractice(){ const d=new Date().toISOString().slice(0,10); if(!state.streak.days.includes(d)){state.streak.days.push(d); save();} }
+function streakCount(){ const set=new Set(state.streak.days); let n=0; const d=new Date(); while(set.has(d.toISOString().slice(0,10))){n++; d.setDate(d.getDate()-1);} return n; }
+
+function speak(text){
+  try{ const u=new SpeechSynthesisUtterance(text); u.lang="ko-KR"; u.rate=.85; speechSynthesis.cancel(); speechSynthesis.speak(u);}catch(e){}
+}
+
+const NAV = [
+  ["home","도","Today"],["patterns","형","Patterns"],["glossary","말","Terms"],["techniques","기","Technique"],["philosophy","정","Philosophy"],
+  ["path","띠","Belt path"],["train","련","Train"],["quiz","시","Quiz"],["rules","규","Rules"],["about","역","History"]
+];
+const SHELL = [["dojang","道","Hub"],["tracks","갈","Tracks"],["cycle","環","Agency cycle"],["evidence","證","Evidence"]];
+const BOTTOM = ["dojang","patterns","glossary","train","quiz"];
+function renderNav(cur){
+  const a=([id,ic,l])=>`<a class="nav-a ${cur===id?"on":""}" href="#${id}"><span class="ic">${ic}</span>${l}</a>`;
+  $("#side").innerHTML = `<div class="brand"><div class="seal">道</div><div><b>Dojang</b><small>Tao Institute</small></div></div>` +
+    SHELL.map(a).join("") +
+    `<div class="navsec">Taekwon-Do <span class="pill" style="padding:1px 6px;font-size:10px">module 1</span></div>` +
+    NAV.map(a).join("") +
+    `<div class="foot">${esc(DATA.dojang.motto)}<br>Prototype · every item carries its source.</div>`;
+  const all=[...SHELL,...NAV];
+  $("#bottom").innerHTML = BOTTOM.map(id=>all.find(n=>n[0]===id)).map(([id,ic,l])=>`<a class="${cur===id?"on":""}" href="#${id}"><span class="ic">${ic}</span>${l}</a>`).join("");
+}
+const tulById = id => DATA.itfTul.find(t=>t.id===id);
+function beltChip(b){ const c=b.c; return `<span class="beltchip" style="background:${c[0]}">${c[1]?`<i style="background:${c[1]}"></i>`:""}</span>`; }
+
+/* ---------------- views ---------------- */
+const V = {};
+
+V.home = () => {
+  const b = DATA.belts[state.belt]; const next = DATA.belts[Math.min(state.belt+1, DATA.belts.length-1)];
+  const learnedCount = Object.values(state.learned).filter(Boolean).length;
+  const termsKnown = Object.values(state.terms).filter(Boolean).length;
+  const tenet = DATA.tenets[new Date().getDate()%5];
+  const focus = b.tul ? tulById(b.tul) : tulById("chon-ji");
+  return `
+  <a href="#dojang" class="muted small" style="text-decoration:none">← Dojang hub</a><div class="kicker" style="margin-top:8px">Taekwon-Do · Today · ${new Date().toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"})}</div>
+  <div class="hero">
+    <div class="card big">
+      <div class="row"><span class="pill red">Your rank</span>${beltChip(b)} <span class="muted">${b.rank} · ${b.color}</span></div>
+      <h1 style="margin-top:16px">Today's focus:<br><span class="hg">${focus.hg}</span> ${focus.name}</h1>
+      <p class="lead">${focus.moves} movements · ${focus.rank}. ${esc(focus.meaning.split(".")[0])}.</p>
+      <div class="row" style="margin-top:18px">
+        <a class="btn pri" href="#pattern-${focus.id}">Practise pattern</a>
+        <a class="btn" href="#train">Start a session</a>
+        <a class="btn" href="#quiz">5-minute quiz</a>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="card"><div class="dim small">Practice streak</div><div class="stat">${streakCount()} <span class="small muted">days</span></div></div>
+      <div class="card"><div class="dim small">Patterns marked learned</div><div class="stat">${learnedCount}<span class="small muted"> / ${DATA.itfTul.length}</span></div><div class="bar"><i style="width:${learnedCount/24*100}%"></i></div></div>
+      <div class="card"><div class="dim small">Terms mastered</div><div class="stat">${termsKnown}<span class="small muted"> / ${DATA.glossary.length}</span></div><div class="bar"><i style="width:${termsKnown/DATA.glossary.length*100}%"></i></div></div>
+    </div>
+  </div>
+  <h2>Tenet of the day</h2>
+  <div class="card"><div class="row"><span class="hg" style="font-size:26px">${tenet.hg}</span><div><h3>${tenet.en}</h3><div class="muted small">${tenet.ko}</div></div></div><p style="margin-top:10px">${tenet.gist}</p><div class="src">${tenet.src}</div></div>
+  <h2>Next grading</h2>
+  <div class="card"><div class="row">${beltChip(next)} <b>${next.rank}</b> <span class="muted">· ${next.color}</span></div>
+  <p class="muted" style="margin-top:8px">Required pattern: ${next.tul?`<a href="#pattern-${next.tul}">${tulById(next.tul).name}</a>`:"—"}. Review the terminology and fundamentals on your <a href="#path">belt path</a>.</p></div>
+  <h2>Explore</h2>
+  <div class="grid g4">
+    ${[["patterns","24 ITF tul + 17 Kukkiwon poomsae"],["glossary",DATA.glossary.length+" terms, ITF & Kukkiwon romanisation"],["techniques","Stances, theory of power, tenets"],["rules","2026 WT Kyorugi changes"]].map(([h,t])=>`<a class="card click" style="text-decoration:none" href="#${h}"><h3>${NAV.find(n=>n[0]===h)[2]}</h3><p class="muted small" style="margin-top:4px">${t}</p></a>`).join("")}
+  </div>`;
+};
+
+V.patterns = () => {
+  const tab = store.get("ptab","itf");
+  const itf = DATA.itfTul.map((t,i)=>{
+    const has = DATA.sequences[t.id]; const L = state.learned[t.id];
+    return `<div class="card click" onclick="location.hash='pattern-${t.id}'">
+      <div class="row" style="justify-content:space-between"><span class="pill ${i<9?"":"gold"}">${t.rank}</span>${L?'<span class="pill" style="color:#9fd8ad">✓ learned</span>':""}</div>
+      <div style="margin-top:12px"><span class="hg" style="font-size:22px">${t.hg}</span></div>
+      <h3 style="font-size:18px;font-family:var(--serif)">${t.name}</h3>
+      <div class="muted small">${t.moves} movements · ENC Vol. ${t.vol}${has?' · <span style="color:var(--seal2)">step player</span>':""}</div>
+    </div>`}).join("");
+  const kk = DATA.kkPoomsae.map(p=>`<div class="card"><span class="pill ${p.level.includes("Dan")?"gold":""}">${p.level}</span><div style="margin-top:12px"><span class="hg" style="font-size:20px">${p.hg}</span></div><h3 style="font-family:var(--serif);font-size:17px">${p.name}</h3>${p.trigram?`<div class="muted small">Trigram: ${p.trigram}</div>`:""}<div class="dim small" style="margin-top:6px">Sequence: pending Kukkiwon license</div></div>`).join("");
+  const hist = DATA.historicTul.map(p=>`<div class="card"><span class="pill">Historical</span><div style="margin-top:12px"><span class="hg" style="font-size:20px">${p.hg}</span></div><h3 style="font-family:var(--serif);font-size:17px">${p.name}</h3><div class="muted small">${p.moves} movements</div><p class="small" style="margin-top:8px">${p.note}</p><div class="src">${p.src}</div></div>`).join("") +
+    `<div class="card"><span class="pill">1965 edition</span><h3 style="margin-top:12px">Shotokan-derived forms</h3><p class="small muted" style="margin-top:6px">The 1965 book also taught Sho-Rin / Sho-Rei forms (Hei-An, Bat-Sai, En-Bi, Ro-Hai, Kouh-Shang-Kouh, Tet-Ki, Jit-Te, Hang-Getsu, Ji-On) alongside 20 Chang-Hon patterns — a record of how the syllabus evolved.</p><div class="src">1965 Table of Contents, pp. 216–238</div></div>`;
+  return `<div class="kicker">Patterns · Tul · Poomsae</div><h1>Patterns</h1>
+  <p class="lead">Every pattern is labelled by lineage. Gen. Choi's 24 Chang-Hon tul are the spine; Kukkiwon poomsae sit alongside for students in WT schools.</p>
+  <div class="tabs">${[["itf","ITF · Chang-Hon (24)"],["kk","Kukkiwon / WT (17)"],["hist","Historical"]].map(([k,l])=>`<button class="tab ${tab===k?"on":""}" onclick="store.set('ptab','${k}');route()">${l}</button>`).join("")}</div>
+  ${tab==="itf"?`<p class="muted small" style="margin-bottom:12px">“The 24 patterns represent 24 hours, one day, or all my life.” — Gen. Choi, ENC Vol. VIII</p><div class="grid g4">${itf}</div>`:""}
+  ${tab==="kk"?`<div class="note">Kukkiwon poomsae are listed for completeness. Move-by-move content would come from the Kukkiwon Textbook under license.</div><div class="grid g4">${kk}</div>`:""}
+  ${tab==="hist"?`<div class="grid g3">${hist}</div>`:""}`;
+};
+
+/* pattern detail */
+let P = {id:null, i:-1, timer:null, speed:1.6};
+const DIRV = {A:[1,0],B:[-1,0],D:[0,1],C:[0,-1],E:[-1,0],F:[1,0]};
+V.pattern = (id) => {
+  const t = tulById(id); if(!t) return V.patterns();
+  const seq = DATA.sequences[id];
+  if(P.id!==id){ P.id=id; P.i=-1; stopPlay(); }
+  const reps = state.reps[id]||0;
+  const head = `<a href="#patterns" class="muted small" style="text-decoration:none">← All patterns</a>
+    <div class="row" style="margin-top:10px;align-items:flex-end;gap:16px"><span class="hg" style="font-size:44px;line-height:1">${t.hg}</span><div><div class="kicker" style="margin:0">${t.rank} · ${t.belt}</div><h1>${t.name}</h1></div></div>
+    <p class="lead">${esc(t.meaning)}</p>
+    <div class="row" style="margin-top:12px"><span class="pill">${t.moves} movements</span><span class="pill">ENC Vol. ${t.vol}</span>${t.diagram?`<span class="pill gold">Diagram ${t.diagram}</span>`:""}${t.note?`<span class="pill red">${t.note}</span>`:""}</div>`;
+  const practice = `<div class="card" style="margin-top:14px"><div class="row" style="justify-content:space-between">
+      <div class="counter"><button class="btn sm" onclick="rep('${id}',-1)">−</button><div><div class="n" id="repn">${reps}</div></div><button class="btn sm" onclick="rep('${id}',1)">+1 rep</button><span class="muted small">full repetitions logged</span></div>
+      <button class="btn sm ${state.learned[id]?"pri":""}" onclick="toggleLearned('${id}')">${state.learned[id]?"✓ Learned":"Mark learned"}</button></div></div>`;
+  if(!seq){
+    return head + practice + `<div class="note" style="margin-top:18px">The step player is built for Chon-Ji and Dan-Gun in this prototype. In the full app every pattern gets the same treatment, written from ENC Vol. ${t.vol} and reviewed by a certified instructor.</div>
+    <a class="btn" href="#pattern-chon-ji">Open Chon-Ji</a> <a class="btn" href="#pattern-dan-gun">Open Dan-Gun</a>`;
+  }
+  return head + `
+  <div class="pd" style="margin-top:22px">
+    <div>
+      <div class="floor" id="floor">${floorSVG(id)}</div>
+      <div class="ctrl">
+        <button class="btn sm" onclick="go(-1)">◀ Prev</button>
+        <button class="btn sm pri" id="playb" onclick="togglePlay()">▶ Play</button>
+        <button class="btn sm" onclick="go(1)">Next ▶</button>
+        <button class="btn sm" onclick="P.i=-1;stopPlay();paint()">Reset</button>
+        <label class="small muted row" style="gap:6px">Pace <input type="range" min="0.6" max="3" step="0.2" value="${P.speed}" oninput="P.speed=+this.value"></label>
+        <label class="small muted row" style="gap:6px"><input type="checkbox" id="voice" style="width:auto"> Count in Korean</label>
+      </div>
+      <div class="stepnow" id="stepnow"></div>
+    </div>
+    <div>
+      <ol class="steplist" id="steplist">
+        <li data-i="-1"><b>준비</b><div><div style="font-weight:600">Ready</div><div class="muted">${seq.ready}</div></div></li>
+        ${seq.steps.map((s,i)=>`<li data-i="${i}"><b>${i+1}</b><div><div style="font-weight:600">${s.t}</div><div class="muted">${s.s} · ${s.m}</div></div></li>`).join("")}
+        <li data-i="${seq.steps.length}"><b>끝</b><div><div style="font-weight:600">End</div><div class="muted">${seq.end}</div></div></li>
+      </ol>
+      <div class="src">${seq.src} — compact paraphrase; floor path is schematic</div>
+    </div>
+  </div>` + practice;
+};
+function floorSVG(id){
+  const seq = DATA.sequences[id]; const pts = seq.steps;
+  const xs=[0,...pts.map(p=>p.x)], ys=[0,...pts.map(p=>p.y)];
+  const minx=Math.min(...xs)-1.2,maxx=Math.max(...xs)+1.2,miny=Math.min(...ys)-1.2,maxy=Math.max(...ys)+1.2;
+  const span=Math.max(maxx-minx,maxy-miny); const cx=(minx+maxx)/2, cy=(miny+maxy)/2;
+  const S=400/span; const X=x=>200+(x-cx)*S, Y=y=>200-(y-cy)*S;
+  P.X=X; P.Y=Y; P.S=S;
+  let g="";
+  for(let x=Math.ceil(minx);x<=maxx;x++) g+=`<line x1="${X(x)}" y1="0" x2="${X(x)}" y2="400" stroke="#1d1d22"/>`;
+  for(let y=Math.ceil(miny);y<=maxy;y++) g+=`<line x1="0" y1="${Y(y)}" x2="400" y2="${Y(y)}" stroke="#1d1d22"/>`;
+  const topY = Math.max(...ys);
+  const lab = (t,x,y)=>`<text x="${x}" y="${y}" fill="#d9b25a" font-family="Noto Serif KR" font-weight="700" font-size="15" text-anchor="middle" dominant-baseline="middle">${t}</text>`;
+  let labels = lab("A",X(maxx)-12,Y(0)) + lab("B",X(minx)+12,Y(0)) + lab("D",X(0),Y(maxy)+14) + lab("C",X(0),Y(miny)-14);
+  if(id==="dan-gun") labels += lab("E",X(minx)+12,Y(topY)) + lab("F",X(maxx)-12,Y(topY));
+  return `<svg viewBox="0 0 400 400" aria-label="Floor diagram">${g}
+    <line x1="${X(minx)+24}" y1="${Y(0)}" x2="${X(maxx)-24}" y2="${Y(0)}" stroke="#3a3a44" stroke-width="2" stroke-dasharray="4 5"/>
+    ${labels}
+    <polyline id="trail" fill="none" stroke="#c23b2e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity=".85" points="${X(0)},${Y(0)}"/>
+    <g id="dots"></g>
+    <g id="me" style="transition:transform .45s cubic-bezier(.4,.1,.2,1)" transform="translate(${X(0)},${Y(0)})">
+      <g id="meRot" style="transition:transform .45s" transform="rotate(-90)">
+        <circle r="15" fill="#f2ece0"/><path d="M 7 -7 L 22 0 L 7 7 Z" fill="#c23b2e"/><circle r="5" fill="#121214"/>
+      </g>
+    </g>
+    <text x="12" y="22" fill="#77726a" font-size="11" font-family="Inter">Start · facing D</text>
+  </svg>`;
+}
+function paint(){
+  const seq = DATA.sequences[P.id]; if(!seq) return; const n=seq.steps.length;
+  const i=P.i;
+  const upto = seq.steps.slice(0, Math.max(0,Math.min(i+1,n)));
+  const pts=[[0,0],...upto.map(s=>[s.x,s.y])];
+  if(i>=n) pts.push([0,0]);
+  const tr=$("#trail"); if(!tr) return;
+  tr.setAttribute("points", pts.map(([x,y])=>`${P.X(x)},${P.Y(y)}`).join(" "));
+  $("#dots").innerHTML = upto.map((s,k)=>`<circle cx="${P.X(s.x)}" cy="${P.Y(s.y)}" r="${k===i?0:3.5}" fill="#c23b2e"/>`).join("");
+  const cur = i<0||i>=n ? {x:0,y:0,f:"D"} : seq.steps[i];
+  const ang = {A:0,B:180,D:-90,C:90,E:180,F:0}[cur.f];
+  $("#me").setAttribute("transform",`translate(${P.X(cur.x)},${P.Y(cur.y)})`);
+  $("#meRot").setAttribute("transform",`rotate(${ang})`);
+  document.querySelectorAll("#steplist li").forEach(li=>li.classList.toggle("on", +li.dataset.i===i));
+  const on=$("#steplist li.on"); if(on) on.scrollIntoView({block:"nearest",behavior:"smooth"});
+  let html;
+  if(i<0) html=`<div class="stepnum">준비 <small>Ready</small></div><p style="margin-top:10px">${seq.ready}</p>`;
+  else if(i>=n) html=`<div class="stepnum">끝 <small>End · ${n} movements</small></div><p style="margin-top:10px">${seq.end} Patterns begin and end on the same spot.</p>`;
+  else { const s=seq.steps[i]; html=`<div class="stepnum">${i+1}<small> / ${n}</small></div>
+    <h3 style="font-size:20px;font-family:var(--serif);margin-top:10px">${s.t}</h3>
+    <div class="row" style="margin-top:8px"><span class="pill gold">${s.s}</span><span class="pill">${s.m}</span><span class="pill red">Facing ${s.f}</span></div>`; }
+  $("#stepnow").innerHTML=html;
+}
+const KCOUNT=["hana","dul","set","net","daseot","yeoseot","ilgop","yeodeol","ahop","yeol"];
+function go(d){ const n=DATA.sequences[P.id].steps.length; P.i=Math.max(-1,Math.min(n,P.i+d)); paint(); if(d>0&&P.i>=0&&P.i<n&&$("#voice")?.checked) speak(KCOUNT[P.i%10]); if(P.i>=n){stopPlay(); logPractice();} }
+function togglePlay(){ if(P.timer) return stopPlay(); const n=DATA.sequences[P.id].steps.length; if(P.i>=n) P.i=-1; $("#playb").textContent="❚❚ Pause"; const tick=()=>{ go(1); if(P.timer) P.timer=setTimeout(tick,P.speed*1000); }; P.timer=setTimeout(tick,250); }
+function stopPlay(){ clearTimeout(P.timer); P.timer=null; const b=$("#playb"); if(b) b.textContent="▶ Play"; }
+function rep(id,d){ state.reps[id]=Math.max(0,(state.reps[id]||0)+d); if(d>0) logPractice(); save(); $("#repn").textContent=state.reps[id]; }
+function toggleLearned(id){ state.learned[id]=!state.learned[id]; save(); route(); }
+
+V.glossary = () => {
+  const cats=["All",...new Set(DATA.glossary.map(g=>g[3]))];
+  const cat=store.get("gcat","All");
+  return `<div class="kicker">Terminology · 용어</div><h1>Terms</h1>
+  <p class="lead">${DATA.glossary.length} terms, with the ITF spelling from Gen. Choi's volume indexes next to the common Kukkiwon spelling. Tap ▸ to hear the Korean (if your device has a Korean voice); tick a term once you know it.</p>
+  <div style="margin-top:16px"><input id="gq" placeholder="Search English or Korean…  e.g. 'knife', 'chagi'" oninput="drawGloss()"></div>
+  <div class="chips">${cats.map(c=>`<button class="chip ${c===cat?"on":""}" onclick="store.set('gcat','${c}');route()">${c}</button>`).join("")}</div>
+  <div style="overflow:auto"><table class="gl"><thead><tr><th>English</th><th>ITF (Choi)</th><th>Kukkiwon</th><th></th><th>Known</th></tr></thead><tbody id="gbody"></tbody></table></div>
+  <div class="note">${DATA.glossaryNote}</div>`;
+};
+function drawGloss(){
+  const q=($("#gq")?.value||"").toLowerCase(); const cat=store.get("gcat","All");
+  const rows=DATA.glossary.filter(g=>(cat==="All"||g[3]===cat)&&(!q||g.slice(0,3).join(" ").toLowerCase().includes(q)));
+  $("#gbody").innerHTML = rows.map(g=>{const k=g[0]; return `<tr><td>${esc(g[0])}<div class="dim small">${g[3]}</div></td><td class="ko">${esc(g[1])}</td><td class="muted">${esc(g[2]||"—")}</td>
+   <td><button class="say" title="Speak" onclick="speak('${esc(g[1]).replace(/'/g,"")}')">▸</button></td>
+   <td><button class="tick ${state.terms[k]?"on":""}" onclick="state.terms['${k.replace(/'/g,"")}']=!state.terms['${k.replace(/'/g,"")}'];save();drawGloss()">${state.terms[k]?"✓":""}</button></td></tr>`}).join("") || `<tr><td colspan="5" class="muted">No match.</td></tr>`;
+}
+
+/* stance footprint diagrams: [x,y,rot] for left & right foot, units = shoulder widths */
+const FEET = {
+  "Walking stance":[[-0.5,0.75,0],[0.5,-0.75,25]],
+  "L-stance":[[0,0.9,-15],[-0.55,-0.6,-75]],
+  "Sitting stance":[[-0.75,0,0],[0.75,0,0]],
+  "Fixed stance":[[0,0.9,-15],[-0.55,-0.6,-75]],
+  "Rear foot stance":[[0.15,0.55,-25],[-0.2,-0.45,-15]],
+  "Close stance":[[-0.12,0,0],[0.12,0,0]],
+  "Parallel stance":[[-0.5,0,0],[0.5,0,0]],
+  "X-stance":[[0.1,0.1,-15],[-0.15,-0.05,20]],
+  "Attention stance":[[-0.14,0,-22],[0.14,0,22]],
+  "Bending stance":[[0,0,0],null]
+};
+function footSVG(name){
+  const f=FEET[name]; if(!f) return "";
+  const foot=(x,y,r,mirror,fill)=>`<g transform="translate(${100+x*55},${100-y*55}) rotate(${r}) scale(${mirror?-1:1},1)"><path d="M0,-22 C9,-22 11,-10 10,0 C9,12 7,22 0,22 C-7,22 -8,12 -8,2 C-9,-10 -8,-22 0,-22Z" fill="${fill}"/><circle cx="0" cy="-17" r="3" fill="#121214" opacity=".25"/></g>`;
+  return `<svg class="stsvg" viewBox="0 0 200 200" width="100%" height="150">
+    <line x1="100" y1="20" x2="100" y2="180" stroke="#25252b"/><line x1="20" y1="100" x2="180" y2="100" stroke="#25252b"/>
+    <text x="100" y="14" fill="#77726a" font-size="10" text-anchor="middle" font-family="Inter">front</text>
+    ${foot(f[0][0],f[0][1],f[0][2],true,"#d9b25a")}${f[1]?foot(f[1][0],f[1][1],f[1][2],false,"#f2ece0"):`<text x="128" y="96" fill="#77726a" font-size="10" font-family="Inter">R foot raised</text>`}
+    <text x="12" y="192" fill="#d9b25a" font-size="10" font-family="Inter">L</text><text x="26" y="192" fill="#f2ece0" font-size="10" font-family="Inter">R</text>
+  </svg>`;
+}
+V.techniques = () => `<div class="kicker">Fundamentals · 기본</div><h1>Technique</h1>
+  <p class="lead">Stances, the science behind power, and the tenets — the parts of the Encyclopedia every later technique relies on.</p>
+  <h2>Stances · Sogi</h2>
+  <div class="grid g3">${DATA.stances.map(s=>`<div class="card">${footSVG(s.en)}<h3>${s.en}</h3><div class="muted small">${s.ko}${s.kk?` · <span class="dim">KKW: ${s.kk}</span>`:""}</div><p class="small" style="margin-top:8px">${s.spec}</p><div class="src">${s.src}</div></div>`).join("")}</div>
+  <p class="dim small" style="margin-top:8px">Footprints are schematic; proportions follow the shoulder-width measures in the text.</p>
+  <h2>Theory of power · Him ui wolli</h2>
+  <div class="grid g3">${DATA.theory.map(t=>`<div class="card"><h3>${t.en}</h3><div class="muted small">${t.ko}</div><p class="small" style="margin-top:8px">${t.gist}</p></div>`).join("")}</div>
+  <div class="src">${DATA.theorySrc}</div>
+  <h2>Tenets · Jungshin</h2>
+  <div class="grid g3">${DATA.tenets.map(t=>`<div class="card"><span class="hg" style="font-size:24px">${t.hg}</span><h3 style="margin-top:6px">${t.en} <span class="muted small">· ${t.ko}</span></h3><p class="small" style="margin-top:6px">${t.gist}</p><div class="src">${t.src}</div></div>`).join("")}</div>
+  <div class="note">The 1965 book lists the tenets differently (it includes “modesty”), which the full app can show as a history layer.</div>
+  <p class="small muted" style="margin-top:10px">Full explanations of the tenets, the Charter and the training secrets are in <a href="#philosophy">Philosophy</a>.</p>`;
+
+
+V.philosophy = () => `<div class="kicker">Philosophy · 정신</div><h1>Philosophy</h1>
+  <p class="lead">Gen. Choi wrote that whether training succeeds or fails depends largely on the tenets. This section sets out the Charter, his ideals and the principles behind every technique, in his words paraphrased from Vol. I.</p>
+  <h2>Charter of Taekwon-Do · Hun Jang</h2>
+  <div class="grid g2">${DATA.charter.parts.map(([t,x])=>`<div class="card"><span class="pill ${t==="Preamble"||t==="Conclusion"?"gold":""}">${t}</span><p class="small" style="margin-top:8px">${x}</p></div>`).join("")}</div>
+  <div class="src">${DATA.charter.src}</div>
+  <h2>The tenets, explained</h2>
+  <div class="grid">${DATA.tenetDetail.items.map(([t,x],i)=>`<div class="card row" style="flex-wrap:nowrap;align-items:flex-start;gap:16px"><span class="hg" style="font-size:24px;min-width:90px">${DATA.tenets[i].hg}</span><div><h3>${t} <span class="muted small">· ${DATA.tenets[i].ko}</span></h3><p class="small" style="margin-top:4px">${x}</p></div></div>`).join("")}</div>
+  <div class="src">${DATA.tenetDetail.src}</div>
+  <h2>Three ideals (1959)</h2>
+  <div class="card"><p class="muted">${DATA.ideals.intro}</p><ol style="margin:10px 0 0 20px">${DATA.ideals.items.map(x=>`<li style="margin:5px 0">${x}</li>`).join("")}</ol><div class="src">${DATA.ideals.src}</div></div>
+  <h2>The spiritual dimension</h2>
+  <div class="card"><p>${DATA.spiritual.text}</p><div class="src">${DATA.spiritual.src}</div></div>
+  <h2>Twelve technical principles</h2>
+  <div class="card"><p class="muted">${DATA.principles.intro}</p><ol class="cols2" style="margin:10px 0 0 20px">${DATA.principles.items.map(x=>`<li style="margin:5px 0;break-inside:avoid">${x}</li>`).join("")}</ol><div class="src">${DATA.principles.src}</div></div>
+  <h2>Training secrets</h2>
+  <div class="card"><p class="muted">${DATA.secrets.intro}</p><ol style="margin:10px 0 0 20px">${DATA.secrets.items.map(x=>`<li style="margin:4px 0">${x}</li>`).join("")}</ol><div class="src">${DATA.secrets.src}</div></div>`;
+
+V.path = () => `<div class="kicker">Curriculum · 띠</div><h1>Belt path</h1>
+  <p class="lead">Choose your current rank. The app sets your daily focus and grading checklist from it. Colours and order follow ENC Vol. II and Vol. VIII; check them against your own school's syllabus.</p>
+  <div class="path" style="margin-top:20px">${DATA.belts.map((b,i)=>{ const t=b.tul?tulById(b.tul):null; return `
+    <div class="step ${i===state.belt?"me":""}">
+      <div class="belt" style="background:${b.c[0]}">${b.c[1]?`<i style="background:${b.c[1]}"></i>`:""}</div>
+      <div><b>${b.rank}</b> <span class="muted">· ${b.color}</span><div class="small muted">${t?`Pattern: <a href="#pattern-${t.id}">${t.name}</a> (${t.moves})`:"Fundamentals, stances, counting, commands"}${t&&state.learned[t.id]?' <span style="color:#9fd8ad">✓</span>':""}</div></div>
+      <button class="btn sm ${i===state.belt?"pri":""}" onclick="state.belt=${i};save();route()">${i===state.belt?"My rank":"Set"}</button>
+    </div>`}).join("")}</div>
+  <h2>Meaning of the belt colours</h2>
+  <div class="grid g3">${DATA.beltMeaning.map(([c,m])=>`<div class="card"><h3>${c}</h3><p class="small muted" style="margin-top:4px">${m}</p></div>`).join("")}</div>
+  <div class="src">ENC Vol. II, Practice Suit — Meaning of Belt Colors</div>
+  <h2>The rank system</h2>
+  <div class="grid g2">${DATA.rankSystem.points.map(([t,x])=>`<div class="card"><h3>${t}</h3><p class="small muted" style="margin-top:4px">${x}</p></div>`).join("")}</div>
+  <div class="src">${DATA.rankSystem.src}</div>`;
+
+/* training */
+let T={on:false,phase:"idle",round:0,left:0,iv:null,cfg:store.get("tcfg",{rounds:5,work:90,rest:30,call:4,pool:"Kicks"})};
+V.train = () => `<div class="kicker">Training · 수련</div><h1>Train</h1>
+  <p class="lead">A round timer that calls out techniques in Korean during work rounds, plus practice sessions built from your rank.</p>
+  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr));margin-top:18px">
+    <div class="card timer">
+      <div class="tphase ${T.phase}" id="tph">${T.phase==="idle"?"Ready":T.phase}</div>
+      <div class="tdisp" id="tdisp">${fmt(T.left||T.cfg.work)}</div>
+      <div class="muted" id="tround">Round ${T.round||1} of ${T.cfg.rounds}</div>
+      <div class="callout" id="tcall"></div>
+      <div class="row" style="justify-content:center;margin-top:18px"><button class="btn pri" id="tgo" onclick="tToggle()">${T.on?"Pause":"Start"}</button><button class="btn" onclick="tReset()">Reset</button></div>
+    </div>
+    <div class="card">
+      <h3>Timer settings</h3>
+      <div class="fields" style="margin-top:12px">
+        <label>Rounds<input type="number" min="1" max="30" value="${T.cfg.rounds}" onchange="tset('rounds',this.value)"></label>
+        <label>Work (sec)<input type="number" min="10" max="600" value="${T.cfg.work}" onchange="tset('work',this.value)"></label>
+        <label>Rest (sec)<input type="number" min="0" max="300" value="${T.cfg.rest}" onchange="tset('rest',this.value)"></label>
+        <label>Call every (sec)<input type="number" min="0" max="30" value="${T.cfg.call}" onchange="tset('call',this.value)"></label>
+        <label>Call-outs<select onchange="tset('pool',this.value)">${["Kicks","Blocks","Attacks","Stances","Off"].map(p=>`<option ${p===T.cfg.pool?"selected":""}>${p}</option>`).join("")}</select></label>
+      </div>
+      <p class="small dim" style="margin-top:10px">Set “Call every” to 0 for a plain round timer. Voice needs a Korean speech voice on your device.</p>
+    </div>
+  </div>
+  <h2>Today's session · ${DATA.belts[state.belt].rank}</h2>
+  ${session()}`;
+function session(){
+  const b=DATA.belts[state.belt]; const t=b.tul?tulById(b.tul):tulById("chon-ji");
+  const prev=DATA.belts.slice(1,state.belt).map(x=>tulById(x.tul)).filter(Boolean);
+  const blocks=[
+    ["Warm-up & calisthenics","8 min","Joint rotation, then the stretches in ENC Vol. II “Calisthenics (Dosoo Dallyon)”."],
+    ["Stances","5 min","Hold each stance for 30 sec per side: walking, L-stance, sitting, rear foot. Check against the footprint diagrams."],
+    ["Fundamental exercise","10 min","Four-direction punch & block (Saju Jirugi / Saju Makgi), 3× each side."],
+    [`Pattern: ${t.name}`,"12 min",`5 slow reps for accuracy, 3 at full speed with the step player, then 2 from memory. Log reps.`],
+    ...(prev.length?[["Review earlier patterns","6 min",prev.map(p=>p.name).join(" · ")]]:[]),
+    ["Kicks","8 min","Front snap kick, side piercing kick, turning kick — 10 per leg, from L-stance."],
+    ["Terminology","3 min","One flashcard round in Quiz."],
+    ["Cool-down","4 min","Breath control and static stretching."]
+  ];
+  return `<div class="grid">${blocks.map((x,i)=>`<div class="card row" style="justify-content:space-between;flex-wrap:nowrap"><div class="row" style="flex-wrap:nowrap;gap:14px"><div class="stepnum" style="font-size:24px;min-width:26px">${i+1}</div><div><h3>${x[0]}</h3><div class="muted small">${x[2]}</div></div></div><span class="pill">${x[1]}</span></div>`).join("")}</div>
+  <div class="row" style="margin-top:12px"><button class="btn pri" onclick="logPractice();this.textContent='✓ Logged today';">Log session complete</button><span class="dim small">Sessions count toward your streak.</span></div>`;
+}
+const fmt=s=>`${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`;
+function tset(k,v){ T.cfg[k]=k==="pool"?v:Math.max(0,+v||0); store.set("tcfg",T.cfg); if(!T.on){T.left=T.cfg.work; tdraw();} }
+function tdraw(){ if(!$("#tdisp")) return; $("#tdisp").textContent=fmt(T.left); $("#tph").textContent=T.phase==="idle"?"Ready":T.phase; $("#tph").className="tphase "+T.phase; $("#tround").textContent=`Round ${Math.max(1,T.round)} of ${T.cfg.rounds}`; $("#tgo").textContent=T.on?"Pause":"Start"; }
+function beep(f=880,d=.18){ try{ const a=T.ac||(T.ac=new (window.AudioContext||window.webkitAudioContext)()); const o=a.createOscillator(),g=a.createGain(); o.frequency.value=f; o.connect(g); g.connect(a.destination); g.gain.setValueAtTime(.2,a.currentTime); g.gain.exponentialRampToValueAtTime(.001,a.currentTime+d); o.start(); o.stop(a.currentTime+d);}catch(e){} }
+function tToggle(){
+  if(T.on){ T.on=false; clearInterval(T.iv); tdraw(); return; }
+  if(T.phase==="idle"){ T.phase="work"; T.round=1; T.left=T.cfg.work; beep(1100,.3); }
+  T.on=true; let since=0;
+  T.iv=setInterval(()=>{
+    T.left--; since++;
+    if(T.phase==="work" && T.cfg.call>0 && T.cfg.pool!=="Off" && since>=T.cfg.call){ since=0; callout(); }
+    if(T.left<=3&&T.left>0) beep(660,.08);
+    if(T.left<=0){
+      if(T.phase==="work"){ if(T.round>=T.cfg.rounds){ clearInterval(T.iv); T.on=false; T.phase="idle"; T.left=T.cfg.work; T.round=0; beep(520,.6); logPractice(); $("#tcall").innerHTML="Done · 수고했습니다"; tdraw(); return; }
+        T.phase=T.cfg.rest>0?"rest":"work"; T.left=T.cfg.rest||T.cfg.work; if(T.phase==="work")T.round++; beep(520,.4); $("#tcall").innerHTML=""; }
+      else { T.phase="work"; T.round++; T.left=T.cfg.work; beep(1100,.3); }
+    }
+    tdraw();
+  },1000);
+  tdraw();
+}
+function tReset(){ clearInterval(T.iv); T={...T,on:false,phase:"idle",round:0,left:T.cfg.work}; tdraw(); if($("#tcall")) $("#tcall").innerHTML=""; }
+function callout(){ const pool=DATA.glossary.filter(g=>g[3]===T.cfg.pool && !["Kick","Block","Punch","Strike","Thrust","Stance"].includes(g[0])); const g=pool[Math.floor(Math.random()*pool.length)]; $("#tcall").innerHTML=`${esc(g[1])}<small>${esc(g[0])}</small>`; speak(g[1]); }
+
+/* quiz */
+let Q={mode:store.get("qmode","mc"),deck:store.get("qdeck","All"),cur:null,score:0,n:0,flip:false};
+function qPool(){
+  const g=DATA.glossary.filter(x=>Q.deck==="All"||x[3]===Q.deck).map(x=>({q:x[0],a:x[1],kind:"term",sub:x[3]}));
+  if(Q.deck==="All"||Q.deck==="Patterns") DATA.itfTul.forEach(t=>{ g.push({q:`How many movements in ${t.name}?`,a:String(t.moves),kind:"moves"}); g.push({q:t.meaning.replace(new RegExp(t.name.replace("-","-?"),"gi"),"___").slice(0,170)+"…",a:t.name,kind:"meaning"}); });
+  return g;
+}
+function qNext(){ const p=qPool(); const c=p[Math.floor(Math.random()*p.length)]; const same=p.filter(x=>x.kind===c.kind&&x.a!==c.a); const opts=[c.a]; while(opts.length<4&&same.length){ const o=same.splice(Math.floor(Math.random()*same.length),1)[0].a; if(!opts.includes(o)) opts.push(o);} Q.cur={...c,opts:opts.sort(()=>Math.random()-.5)}; Q.flip=false; }
+V.quiz = () => { if(!Q.cur) qNext(); const decks=["All","Patterns","Counting","Commands","Stances","Blocks","Attacks","Kicks","Tools","Training"];
+  const c=Q.cur;
+  return `<div class="kicker">Self-test · 시험</div><h1>Quiz</h1>
+  <p class="lead">Flashcards and multiple choice drawn from the glossary and the 24 patterns: names, movement counts, meanings.</p>
+  <div class="tabs">${[["mc","Multiple choice"],["fc","Flashcards"]].map(([k,l])=>`<button class="tab ${Q.mode===k?"on":""}" onclick="Q.mode='${k}';store.set('qmode','${k}');route()">${l}</button>`).join("")}</div>
+  <div class="chips">${decks.map(d=>`<button class="chip ${Q.deck===d?"on":""}" onclick="Q.deck='${d}';store.set('qdeck','${d}');qNext();route()">${d}</button>`).join("")}</div>
+  ${Q.mode==="mc"?`
+    <div class="muted small">Score ${Q.score} / ${Q.n}</div>
+    <div class="card" style="max-width:560px;margin-top:10px"><div class="dim small">${c.kind==="term"?"What is the ITF Korean term for…":c.kind==="moves"?"Pattern facts":"Which pattern is this?"}</div><div style="font-family:var(--serif);font-size:${c.kind==="meaning"?17:24}px;font-weight:700;margin-top:6px">${esc(c.q)}</div></div>
+    <div class="opts" id="opts">${c.opts.map(o=>`<button class="opt" onclick="qAns(this,'${esc(o).replace(/'/g,"\\'")}')">${esc(o)}</button>`).join("")}</div>
+    <button class="btn" style="margin-top:12px" onclick="qNext();route()">Skip →</button>`
+  :`<div class="flash ${Q.flip?"flip":""}" onclick="this.classList.toggle('flip')"><div class="in">
+      <div class="face"><div class="dim small">${c.kind==="term"?c.sub:"Pattern"}</div><div class="big" style="font-size:${c.kind==="meaning"?17:32}px">${esc(c.q)}</div><div class="dim small" style="margin-top:14px">tap to flip</div></div>
+      <div class="face back"><div class="big">${esc(c.a)}</div>${c.kind==="term"?`<button class="btn sm" style="margin-top:14px" onclick="event.stopPropagation();speak('${esc(c.a).replace(/'/g,"")}')">▸ Hear it</button>`:""}</div></div></div>
+    <div class="row" style="margin-top:14px"><button class="btn" onclick="qNext();route()">Again later</button><button class="btn pri" onclick="${c.kind==="term"?`state.terms['${c.q.replace(/'/g,"")}']=true;save();`:""}qNext();route()">Got it →</button></div>`}`;
+};
+function qAns(el,a){ if(el.parentNode.dataset.done) return; el.parentNode.dataset.done=1; Q.n++; const ok=a===Q.cur.a; if(ok){Q.score++; if(Q.cur.kind==="term"){state.terms[Q.cur.q]=true;save();}} [...el.parentNode.children].forEach(b=>{ if(b.textContent===Q.cur.a) b.classList.add("ok"); }); if(!ok) el.classList.add("no"); setTimeout(()=>{qNext();route();},ok?700:1500); }
+
+V.rules = () => `<div class="kicker">Competition · 경기</div><h1>Rules</h1>
+  <p class="lead">Current sport rules by lineage, with an effective date and source on each. Rules change most years, so this section is updated from the federations' own documents.</p>
+  <div class="tabs"><button class="tab on">WT Kyorugi 2026</button><button class="tab" onclick="document.getElementById('itfr').scrollIntoView({behavior:'smooth'})">ITF</button></div>
+  <div class="card"><span class="pill red">In force · June 2026</span><h2 style="margin-top:10px">${DATA.wt2026.title}</h2><p class="muted">${DATA.wt2026.effective}</p>
+  <dl class="wt">${DATA.wt2026.items.map(([t,d])=>`<dt>${t}</dt><dd>${d}</dd>`).join("")}</dl><div class="src">${DATA.wt2026.src}</div></div>
+  <div class="card" style="margin-top:14px"><h3>Scoring quick reference</h3><p class="small muted" style="margin-top:6px">The full point table (punch, body kicks, head kicks, turning bonuses) needs to be filled in from the WT Competition Rules & Interpretation in force from June 1, 2026. The supplied summary confirms one value: spinning head kicks are now 6 points.</p></div>
+  <h2 id="itfr">ITF tournament rules</h2>
+  <div class="note">The ITF federations publish their own tournament rules (patterns, sparring, power test, special technique). Because the three federations differ, the app shows the rules of the federation each user picks. Content is pending partnership.</div>
+  <div class="card" style="margin-top:12px"><span class="pill">Historical</span><h3 style="margin-top:10px">Competition in the Encyclopedia</h3><p class="small" style="margin-top:6px">${DATA.itfRulesHistoric.text}</p><div class="src">${DATA.itfRulesHistoric.src}</div></div>`;
+
+V.about = () => `<div class="kicker">History & sources · 역사</div><h1>History</h1>
+  <p class="lead">A short timeline, the books this content comes from, and how each source may be used.</p>
+  <h2>Timeline</h2><div class="timeline">${DATA.history.map(([y,t,s])=>`<div><b>${y}</b>${t}<div class="dim small">${s}</div></div>`).join("")}</div><div class="note">${DATA.historyNote}</div>
+  <h2>Sources</h2>
+  <div class="grid g2">${DATA.sources.map(s=>`<div class="card"><div class="row" style="justify-content:space-between"><span class="pill gold">${s.k}</span><span class="pill">${s.status}</span></div><h3 style="margin-top:10px">${s.t}</h3><p class="small muted" style="margin-top:4px">${s.role}</p></div>`).join("")}</div>
+  <div class="note">Gen. Choi's Encyclopedia and the 1965 book are copyrighted. This prototype only uses facts from them (names, counts, sequences, measures) in its own wording and illustrations, citing volume and page. Reproducing their text or plates would need a license.</div>`;
+
+
+/* ---------------- Dojang shell ---------------- */
+const STATUS={live:["Live","red"],planned:["Planned",""],blocked:["Needs source","gold"],research:["Research only","gold"]};
+V.dojang = () => { const D=DATA.dojang; const t=D.tracks;
+  return `<div class="kicker">Tao Institute for Actualization · 道場</div>
+  <h1 style="font-size:clamp(30px,4.4vw,48px)">${esc(D.motto)}</h1>
+  <p class="lead">${esc(D.summary)}</p>
+  <p class="dim small" style="margin-top:6px">${esc(D.nameNote)}</p>
+  <div class="hero" style="margin-top:22px">
+    <a class="card big click" href="#home" style="text-decoration:none">
+      <div class="row"><span class="pill red">Module 1 · Live</span><span class="pill">${DATA.belts[state.belt].rank}</span></div>
+      <h2 style="margin:14px 0 4px;font-size:28px"><span class="hg">태권도</span> Taekwon-Do</h2>
+      <p class="muted">${t[0].scope}</p>
+      <div class="row" style="margin-top:14px"><span class="btn pri">Continue training →</span><span class="dim small">Streak ${streakCount()} days · ${Object.values(state.learned).filter(Boolean).length}/24 patterns</span></div>
+    </a>
+    <div class="grid">
+      <a class="card click" href="#cycle" style="text-decoration:none"><div class="dim small">Organizing model</div><h3 style="margin-top:4px">The agency cycle</h3><p class="small muted" style="margin-top:4px">Sense → perceive → model → value → decide → act → feedback → learn.</p></a>
+      <a class="card click" href="#evidence" style="text-decoration:none"><div class="dim small">Empirical accountability</div><h3 style="margin-top:4px">Evidence registry</h3><p class="small muted" style="margin-top:4px">${D.evidence.length} topics, each labelled from supported to not supported.</p></a>
+    </div>
+  </div>
+  <h2>Tracks</h2>
+  <div class="grid g3">${t.map(trackCard).join("")}</div>
+  <h2>Provisional axioms</h2>
+  <div class="grid g3">${D.axioms.map(([k,v])=>`<div class="card"><h3>${k}</h3><p class="small muted" style="margin-top:4px">${v}</p></div>`).join("")}</div>
+  <div class="src">${D.axiomStatus}</div>`;
+};
+function trackCard(t){ const [l,c]=STATUS[t.status];
+  const inner=`<div class="row" style="justify-content:space-between"><span class="pill ${c}">${l}</span><span class="hg" style="font-size:18px">${t.hg}</span></div>
+    <h3 style="margin-top:12px;font-size:17px;font-family:var(--serif)">${t.name}</h3><div class="dim small">${t.kind}</div>
+    <p class="small" style="margin-top:8px">${t.scope}</p>`;
+  return t.href?`<a class="card click" style="text-decoration:none" href="${t.href}">${inner}</a>`:`<a class="card click" style="text-decoration:none" href="#tracks">${inner}</a>`; }
+V.tracks = () => `<div class="kicker">Offering architecture</div><h1>Tracks</h1>
+  <p class="lead">Whole-Body Health and the 23-module Life Curriculum are constituent facets of Dojang. The practice tracks cut across them and don't replace the curriculum or add new canonical modules. Taekwon-Do is the first module built.</p>
+  <div class="grid" style="margin-top:20px">${DATA.dojang.tracks.map(t=>{const [l,c]=STATUS[t.status]; return `<div class="card">
+    <div class="row" style="justify-content:space-between"><div class="row"><span class="hg" style="font-size:22px;min-width:64px">${t.hg}</span><div><h3 style="font-size:17px;font-family:var(--serif)">${t.name}</h3><div class="dim small">${t.kind}</div></div></div><span class="pill ${c}">${l}</span></div>
+    <p class="small" style="margin-top:10px"><b>Scope.</b> ${t.scope}</p>
+    <p class="small muted" style="margin-top:6px"><b>Guardrail.</b> ${t.guard}</p>
+    ${t.href?`<a class="btn sm pri" style="margin-top:10px" href="${t.href}">Open module →</a>`:""}</div>`}).join("")}</div>
+  <div class="note">Across all tracks: no substitute for qualified instruction or medical care, no automatic rank certification, no diagnosis or therapeutic guarantees.</div>`;
+V.cycle = () => `<div class="kicker">Human agency in the natural world</div><h1>The agency cycle</h1>
+  <p class="lead">The goal is to strengthen the whole cycle, not to optimize one cognitive skill. Martial arts engage many stages at once, and so do music, experiments and practical problem-solving. Each stage below shows where the Taekwon-Do module already touches it.</p>
+  <div class="grid" style="margin-top:20px">${DATA.dojang.cycle.map((s,i)=>`<a class="card click row" style="text-decoration:none;flex-wrap:nowrap;align-items:flex-start;gap:16px" href="${s.link}">
+    <div class="stepnum" style="font-size:28px;min-width:34px">${i+1}</div>
+    <div style="flex:1"><div class="row" style="justify-content:space-between"><h3 style="font-size:16px">${s.k}</h3><span class="pill">${s.obj}</span></div>
+    <p class="small muted" style="margin-top:6px"><span class="hg">In Taekwon-Do · </span>${s.tkd}</p></div></a>`).join("")}
+    <div class="card" style="text-align:center;color:var(--muted)">↻ Learning feeds back into perception, models and future decisions.</div></div>
+  <div class="note">${DATA.dojang.cycleNote}</div>`;
+const ELAB={"Supported":"#9fd8ad","Promising":"#d9b25a","Outcome-specific":"#d9b25a","Mixed":"#e0a35a","Not supported":"#f0a59c"};
+V.evidence = () => `<div class="kicker">Empirical accountability</div><h1>Evidence registry</h1>
+  <p class="lead">Dojang investigates mechanisms and outcomes rather than inferring efficacy from tradition, personal experience or marketing. Each entry gives the population, the finding, how Dojang uses it, and the source. This is a starting set, not a completed literature review.</p>
+  <div class="grid" style="margin-top:20px">${DATA.dojang.evidence.map(e=>`<div class="card">
+    <div class="row" style="justify-content:space-between"><h3 style="font-size:16px">${e.topic}</h3><span class="pill" style="color:${ELAB[e.label]};border-color:${ELAB[e.label]}55">${e.label}</span></div>
+    <div class="dim small" style="margin-top:2px">Population: ${e.pop}</div>
+    <p class="small" style="margin-top:8px">${e.find}</p>
+    <p class="small muted" style="margin-top:6px"><b>How Dojang uses it.</b> ${e.use}</p>
+    <div class="src">${e.src}</div></div>`).join("")}</div>
+  <div class="note">The full registry will record citation, population, intervention, comparator, outcome, limitations, adverse effects, date and review status for every entry (Dossier §6).</div>`;
+
+/* router */
+function route(){
+  const h=(location.hash||"#dojang").slice(1);
+  let html, nav=h;
+  if(h.startsWith("pattern-")){ html=V.pattern(h.slice(8)); nav="patterns"; }
+  else html=(V[h]||V.dojang)();
+  if(!V[h]&&!h.startsWith("pattern-")) nav="dojang";
+  if(h!=="train" && T.on){ /* keep timer running */ }
+  renderNav(nav);
+  $("#main").innerHTML=html;
+  if(h.startsWith("pattern-")) paint();
+  if(h==="glossary") drawGloss();
+  if(h==="train") { if(!T.left) T.left=T.cfg.work; tdraw(); }
+}
+window.addEventListener("hashchange",()=>{ stopPlay(); route(); window.scrollTo(0,0); });
+document.addEventListener("keydown",e=>{ if(!location.hash.startsWith("#pattern-")||!DATA.sequences[P.id]) return; if(e.key==="ArrowRight") go(1); if(e.key==="ArrowLeft") go(-1); if(e.key===" "&&e.target===document.body){e.preventDefault();togglePlay();} });
+route();
+</script>
+</body>
+</html>
