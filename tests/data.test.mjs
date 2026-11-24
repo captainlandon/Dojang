@@ -51,9 +51,12 @@ test("track statuses are valid and only live tracks link to a module", () => {
 });
 test("video library: https/http YouTube links, a check status, no duplicates", () => {
   const all = D.videos.flatMap(g => g.items);
-  assert.ok(all.length >= 17);
+  assert.ok(all.length >= 22);
+  assert.ok(D.videos.some(g => g.lineage === "ITF"), "no ITF video group");
+  for (const id of Object.keys(D.tulVideo)) assert.ok(D.itfTul.some(x => x.id === id), id);
   for (const v of all) {
-    assert.match(v.url, /^https?:\/\/www\.youtube\.com\/(watch\?v=|playlist\?list=)[\w-]+$/, v.url);
+    if (v.kind === "page") assert.match(v.url, /^https:\/\//, v.url);
+    else assert.match(v.url, /^https?:\/\/www\.youtube\.com\/(watch\?v=|playlist\?list=)[\w-]+$/, v.url);
     assert.ok(["confirmed", "unchecked"].includes(v.checked), v.t);
   }
   assert.equal(new Set(all.map(v => v.url)).size, all.length, "duplicate link");

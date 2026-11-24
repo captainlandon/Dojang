@@ -273,6 +273,7 @@ V.pattern = (id) => {
   const head = `<a href="#patterns" class="muted small" style="text-decoration:none">← All patterns</a>
     <div class="row" style="margin-top:10px;align-items:flex-end;gap:16px"><span class="hg" style="font-size:44px;line-height:1">${t.hg}</span><div><div class="kicker" style="margin:0">${t.rank} · ${t.belt}</div><h1>${t.name}</h1></div></div>
     <p class="lead">${esc(t.meaning)}</p>
+    ${DATA.tulVideo[id]?`<div class="row" style="margin-top:12px"><a class="btn sm" href="${DATA.tulVideo[id].video}" target="_blank" rel="noopener noreferrer">▶ Watch a demonstration</a><a class="btn sm" href="${DATA.tulVideo[id].walk}" target="_blank" rel="noopener noreferrer">Step-by-step animation</a><span class="dim small">sonkal.taekwondo.cz (Czech club), via Oxford University TKD · not yet checked · <a href="#watch">more videos</a></span></div>`:`<div class="row" style="margin-top:12px"><a class="btn sm" href="#watch">Videos for this rank</a></div>`}
     <div class="row" style="margin-top:12px"><span class="pill">${t.moves} movements</span><span class="pill">ENC Vol. ${t.vol}</span>${t.diagram?`<span class="pill gold">Diagram ${t.diagram}</span>`:""}${t.note?`<span class="pill red">${t.note}</span>`:""}</div>`;
   const practice = `<div class="card" style="margin-top:14px"><div class="row" style="justify-content:space-between">
       <div class="counter"><button class="btn sm" onclick="rep('${id}',-1)">−</button><div><div class="n" id="repn">${reps}</div></div><button class="btn sm" onclick="rep('${id}',1)">+1 rep</button><span class="muted small">full repetitions logged</span></div>
@@ -436,12 +437,12 @@ V.philosophy = () => `<div class="kicker">Philosophy · 정신</div><h1>Philosop
 
 
 V.watch = () => `<div class="kicker">Video library · 영상</div><h1>Watch</h1>
-  <p class="lead">Curated video references for forms, stretching and technique. Each opens on YouTube. Use them alongside your instructor, not instead of one.</p>
+  <p class="lead">Curated video references for patterns, forms, stretching and technique. Each opens in a new tab on the source site. Use them alongside your instructor, not instead of one.</p>
   <div class="note">${DATA.videoNote}</div>
   ${DATA.videos.map(g=>`<h2>${g.cat} <span class="pill" style="vertical-align:middle">${g.lineage}</span></h2>
     ${g.safety?`<div class="note" style="border-color:var(--seal)">Warm up before you stretch, and never bounce or force a stretch into pain. If you have an injury or condition, check with a doctor or physiotherapist first.</div>`:""}
     <div class="grid g2">${g.items.map(v=>`<a class="card click" style="text-decoration:none" href="${v.url}" target="_blank" rel="noopener noreferrer">
-      <div class="row" style="justify-content:space-between"><span class="pill">${v.kind==="playlist"?"▤ Playlist":"▶ Video"}</span>
+      <div class="row" style="justify-content:space-between"><span class="pill">${v.kind==="playlist"?"▤ Playlist":v.kind==="page"?"↗ Page":"▶ Video"}</span>
         <span class="row" style="gap:6px">${v.official?'<span class="pill red">Listed as official</span>':""}<span class="pill" style="${v.checked==="confirmed"?"color:#9fd8ad;border-color:#9fd8ad55":"color:var(--gold);border-color:#d9b25a55"}">${v.checked==="confirmed"?"✓ Confirmed":"Not yet checked"}</span></span></div>
       <h3 style="margin-top:10px">${esc(v.t)}</h3><div class="muted small">${esc(v.by)}</div>
       ${v.note?`<p class="small dim" style="margin-top:6px">${esc(v.note)}</p>`:""}</a>`).join("")}</div>`).join("")}

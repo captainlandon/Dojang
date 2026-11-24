@@ -301,8 +301,14 @@ DATA.sources = [
 
 // Video library: links supplied by the founder (24 Nov 2026). The app links out; nothing is embedded or copied.
 // checked: "confirmed" = title/channel confirmed by search; "unchecked" = could not be verified from Claude's environment.
-DATA.videoNote = "Links supplied by the founder on 24 Nov 2026. “Confirmed” means a search matched the title and channel. “Not yet checked” means the link could not be verified from where this was built, so open it and check before you rely on it. All videos open on YouTube; nothing is embedded or copied.";
+DATA.videoNote = "The Kukkiwon, stretching and technique links were supplied by the founder; the ITF sources were found on 24 Nov 2026. “Confirmed” means a search or page visit matched the title and source. “Not yet checked” means the link could not be verified from where this was built, so open it and check before you rely on it. Every link opens on the source site; nothing is embedded or copied.";
 DATA.videos = [
+ {cat:"ITF patterns (Chang-Hon tul)", lineage:"ITF", items:[
+  {t:"Pattern videos, Saju Jirugi → Ge-Baek, with step-by-step “go through” animations", by:"Oxford University Taekwon-Do club (videos courtesy of sonkal.taekwondo.cz)", url:"https://users.ox.ac.uk/~outkd/Patterns.shtml", kind:"page", checked:"confirmed", note:"Videos stop at Ge-Baek (1st Dan); go-through pages cover all 24."},
+  {t:"Video gallery: every pattern Do-San → Tong-Il, General Choi seminar archives (1993–1998), fundamentals, step sparring", by:"United ITF Taekwon-Do Australia (Master Michael Muleta)", url:"https://www.itftaekwondo.com/gallery/taekwondo-videos", kind:"page", checked:"confirmed", note:"Includes Grandmaster Choi Jung Hwa, General Choi's son, performing Choong-Moo and Tong-Il."},
+  {t:"“Tips to keep”: committee chairs on tul performance, incl. GM Héctor Marano on competition vs martial-art performance", by:"International Taekwon-Do Federation (itftkd.sport)", url:"https://itftkd.sport/blog/tips-to-keep-34-grand-master-hector-marano/", kind:"page", official:true, checked:"confirmed", note:"One of three federations using the ITF name; details differ between them."},
+  {t:"Chon-Ji: instructional & demonstration videos with written steps", by:"Black Belt Wiki", url:"https://blackbeltwiki.com/?p=3168", kind:"page", checked:"confirmed"},
+  {t:"Dan-Gun: instructional & demonstration videos with written steps", by:"Black Belt Wiki", url:"https://blackbeltwiki.com/?p=3171", kind:"page", checked:"confirmed"}]},
  {cat:"Poomsae · full curricula", lineage:"Kukkiwon/WT", items:[
   {t:"태권도 품새 (Taekwondo Poomsae) — all forms", by:"Kukkiwon World Taekwondo Headquarters (as listed)", url:"http://www.youtube.com/playlist?list=PLSFr5pEwo7gRNGXHlU-ZVxzha5A0c_M3i", kind:"playlist", official:true, checked:"unchecked", note:"Kukkiwon's education playlist exists; this ID not yet confirmed as that playlist."},
   {t:"Official Kukkiwon poomsae videos 2020", by:"Chung Do Taekwondo", url:"http://www.youtube.com/playlist?list=PLx1ZaPXDcgpZN0uxorV-fJsy8EggpbE_i", kind:"playlist", checked:"unchecked", note:"A re-upload playlist, not Kukkiwon's own channel."},
@@ -326,4 +332,6 @@ DATA.videos = [
   {t:"Hand techniques — all colour-belt curriculum", by:"Black Eagle Martial Arts", url:"http://www.youtube.com/watch?v=s4FcS03tZac", kind:"video", checked:"unchecked"},
   {t:"Basic Taekwondo blocks", by:"TaekwondoShawn", url:"http://www.youtube.com/watch?v=q7L9ImZH3Jo", kind:"video", checked:"unchecked"}]}
 ];
-DATA.videoGaps = "No ITF (Chang-Hon) tul videos yet: the supplied list covers Kukkiwon/WT forms only. Sources to look for: an ITF federation's official channel, or instructor-filmed videos commissioned for Dojang.";
+DATA.videoGaps = "Still missing: per-pattern videos for 2nd–6th Dan patterns that can be linked directly, and a single federation-endorsed set. Community videos vary in detail (for example sine wave), so check them against your federation and instructor. The long-term fix is instructor-filmed videos for Dojang, reviewed against the Encyclopedia.";
+// Per-pattern video links (Oxford club page → sonkal.taekwondo.cz), Chon-Ji to Ge-Baek. Listed by the club page; not opened from the build environment.
+DATA.tulVideo = (()=>{ const ids=["chon-ji","dan-gun","do-san","won-hyo","yul-gok","joong-gun","toi-gye","hwa-rang","choong-moo","kwang-gae","po-eun","ge-baek"]; const m={}; ids.forEach((id,i)=>m[id]={video:`http://sonkal.taekwondo.cz/teorie/video.php?en&tul=${i+3}`, walk:`http://sonkal.taekwondo.cz/teorie/tulen.php?tul=${i+3}`}); return m; })();
